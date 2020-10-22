@@ -1,138 +1,174 @@
 <!DOCTYPE html>
 
 <html>
+
 <head>
-	<meta name="yandex-verification" content="a2b0dfa3a10b5338" />
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <meta name="yandex-verification" content="a2b0dfa3a10b5338" />
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+    integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+    crossorigin="anonymous"></script>
+  <title>Junlin Wang&mdash; Home</title>
+  <link rel="stylesheet" href="master.css" />
 
-	<title>Junlin Wang&mdash; Home</title>
-	<link rel="stylesheet" href="master.css" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,700" rel="stylesheet">
 
-	<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,700" rel="stylesheet">
+  <script>
+    function unhide(divID) {
+      var item = document.getElementById(divID);
+      if (item) {
+        item.className = (item.className == 'hidden') ? 'unhidden' : 'hidden';
+      }
+    }
+  </script>
 
-	<script>
-	    function unhide(divID) {
-	        var item = document.getElementById(divID);
-	        if (item) {
-	            item.className=(item.className=='hidden')?'unhidden':'hidden';
-	        }
-	}
-	</script>
-
-	<script type="text/javascript">
-		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-	</script>	
+  <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
 </head>
-<nav class="navbar" style="background-color: #ffffff;padding:20px 0px 0px 70px;" >
-        <div class="container-fluid">
-          <div class="navbar-header" >
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>                        
-            </button>
-            <h1 class="navbar-brand" href="#">Junlin Wang</h1>
-          </div>
-          <div>
-            <div class="collapse navbar-collapse" id="myNavbar">
-              <ul class="nav navbar-nav" style="float: right;">
-                    <li><a href="#home">Home</a></li>
-                <li><a href="#pub">Publications</a></li>
-                <li><a href="#proj">Projects</a></li>
-                
-              </ul>
-            </div>
-          </div>
-        </div>
-      </nav>    
+<nav class="navbar" style="background-color: #ffffff;padding:20px 0px 0px 70px;">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <h1 class="navbar-brand" href="#">Junlin Wang</h1>
+    </div>
+    <div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav" style="float: right;">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#pub">Publications</a></li>
+          <li><a href="#proj">Projects</a></li>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
 <body>
-<div class="wrapper">
+  <main role="main" class="container">
 
-	<div class="posts-wrapper" id="home">
-		<div class="post" style="overflow: auto;">
-                <div id="profile">
-                    <img src="images/pic.jpg" height=250>
-                </div>
-                <div id="contact">	
+    <div class="wrapper">
 
-                    <h1><b>Junlin Wang</b></h1>
-                    University of California, Irvine<br>
-                    <p><span face="courier">junliw1@uci.edu</span></p>
-                    <p>
-                    [<a href="https://github.com/IsThatYou"><span size="3">Github</span></a>] <br>
-                    [<a href="pages/index.html"> <span>Projects</span></a>]<br>
-                    [<a href="images/CV2020.pdf">CV</a>]
-                    </p>
-                    <h4 style="margin-bottom:0.75em;">About Me</h4>
-
-                    <p>I am a fourth-year Computer Science and Mathemtics undergrad at UC Irvine, where I work closely with <a href="https://sameersingh.org">Sameer Singh</a> on Machine Learning Interpretaions and Natural Language Processing Projects.</p>
-                        <p>Previously I summer interned in Applied AI lab at Comcast in DC, and I was supervised by  <a href="http://users.umiacs.umd.edu/~fture/">Ferhan Ture</a>.</p>
-                        <p>My research experience has been prmiarily on adversarial methods and interpretations of NLP models. But I am very interested in all kind of NLP projects, including dialog systems or language models.</p>
-                        <p> I am also part of the ACM@UCI as I enjoy solving programming problems!</p>
-
-                </div>
-                
-
-	    </div>
-	</div>
-
-	<br><br>
-
-    </div>
-    <div class="posts-wrapper" style="clear:both" id = "proj">
-            <h3 style="margin-bottom:0.75em;">News</h3>
+      <div class="posts-wrapper" id="home">
+        <div class="post" style="overflow: auto;">
+          <div id="profile">
+            <img class="rounded img-fluid z-depth-1" src="images/pic.jpg">
+          </div>
+          <div id="contact">
+            <h1><b>Junlin Wang</b></h1>
+            University of California, Irvine<br>
+            <p><span face="courier">junliw1@uci.edu</span></p>
             <p>
-                <ul class="pubs">
-        
-                    <li>        		    
-                         I presented our demo Allennlp Interpret at EMNLP2019 in HK! We also won the Best Demo Award.
-                    </li>
-                    <li>        		    
-                         I internd at Comcast Applied AI Research Lab summer of 2018.
-                    </li>
-                </ul>	 
-                <br>
-                </p>
+              [<a href="https://github.com/IsThatYou"><span size="3">Github</span></a>] <br>
+              [<a href="pages/index.html"> <span>Projects</span></a>]<br>
+              [<a href="images/CV2020.pdf">CV</a>]
+            </p>
+            <h4 style="margin-bottom:0.75em;">About Me</h4>
+
+            <p>I am a fourth-year Computer Science and Mathemtics undergrad at UC Irvine, where I work closely with <a
+                href="https://sameersingh.org">Sameer Singh</a> on Machine Learning Interpretaions and Natural Language
+              Processing Projects.</p>
+            <p>Previously I summer interned in Applied AI lab at Comcast in DC, and I was supervised by <a
+                href="http://users.umiacs.umd.edu/~fture/">Ferhan Ture</a>.</p>
+            <p>My research experience has been prmiarily on adversarial methods and interpretations of NLP models. But I
+              am very interested in all kind of NLP projects, including dialog systems or language models.</p>
+            <p> I am also part of the ACM@UCI as I enjoy solving programming problems!</p>
+
+          </div>
+
+
+        </div>
+      </div>
+
+      <br><br>
+
+    </div>
+    <div class="posts-wrapper" style="clear:both" id="proj">
+      <h3 style="margin-bottom:0.75em;">News</h3>
+      <p>
+      <ul class="pubs">
+
+        <li>
+          I presented our demo Allennlp Interpret at EMNLP2019 in HK! We also won the Best Demo Award.
+        </li>
+        <li>
+          I internd at Comcast Applied AI Research Lab summer of 2018.
+        </li>
+      </ul>
+      <br>
+      </p>
 
     </div>
     </div>
 
 
-	<div class="posts-wrapper" style="clear:both" id="pub">
-		<h3 style="margin-bottom:0.75em;">publications</h3>
-		</i>
-		<p>
-		<ul class="pubs">
-
-            <li>        		    
-                 <a href="https://arxiv.org/abs/1909.09251">AllenNLP Interpret: A Framework for Explaining Predictions of NLP Models</a><br>
-                Eric Wallace, Jens Tuyls, Junlin Wang, Sanjay Subramanian, Matt Gardner, and Sameer Singh.<br>
-                <i>Demo at EMNLP 2019</i> &nbsp;&nbsp;&nbsp; <b><i>Best Demo Award</i></b><br>
-                An open-source toolkit built on top of AllenNLP that makes it easy to interpret NLP models.<br> 
-                <!-- <a href="https://demo.allennlp.org">Try it out!</a> | <a href="link">Getting Started Guide</a> | <a href="link">Paper</a> | <a href="javascript:unhide('demo19');">Citation</a> 
+    <div class="posts-wrapper" style="clear:both" id="pub">
+      <h3 style="margin-bottom:0.75em;">publications</h3>
+      </i>
+      <p>
+      <ul class="pubs">
+        <li>
+          <a href="https://arxiv.org/abs/1909.09251">Gradient-based Analysis of NLP Models is Manipulable
+          </a><br>
+          Junlin Wang, Jens Tuyls, Eric Wallace and Sameer Singh.<br>
+          <i>EMNLP 2020 Findings</i> &nbsp;&nbsp;&nbsp; <br>
+          We found that gradient-based interpretation techniques are not faithful<br>
+          <!-- <a href="https://demo.allennlp.org">Try it out!</a> | <a href="link">Getting Started Guide</a> | <a href="link">Paper</a> | <a href="javascript:unhide('demo19');">Citation</a> 
                 <div id="demo19" class="hidden"> -->
-                <a href="javascript:unhide('interpret19');">bib</a>
-                <div id="interpret19" class="hidden">
-                    <pre>@inproceedings{Wallace2019AllenNLP,
+          <a href="javascript:unhide('manip2020');">bib</a>
+          <a href="http://ucinlp.github.io/facade">blog</a>
+          <div id="manip2020" class="hidden">
+            <pre>@inproceedings{wang2020gradientbased,
+                    Author = {Junlin Wang, Jens Tuyls, Eric Wallace and Sameer Singh},
+                    Booktitle = {Empirical Methods in Natural Language Processing Findings},                            
+                    Year = {2020},
+                    Title = {Gradient-based Analysis of NLP Models is Manipulable}}
+                    </pre>
+          </div>
+        </li>
+        <li>
+          <a href="https://arxiv.org/abs/1909.09251">AllenNLP Interpret: A Framework for Explaining Predictions of NLP
+            Models</a><br>
+          Eric Wallace, Jens Tuyls, Junlin Wang, Sanjay Subramanian, Matt Gardner, and Sameer Singh.<br>
+          <i>Demo at EMNLP 2019</i> &nbsp;&nbsp;&nbsp; <b><i>Best Demo Award</i></b><br>
+          An open-source toolkit built on top of AllenNLP that makes it easy to interpret NLP models.<br>
+          <!-- <a href="https://demo.allennlp.org">Try it out!</a> | <a href="link">Getting Started Guide</a> | <a href="link">Paper</a> | <a href="javascript:unhide('demo19');">Citation</a> 
+                <div id="demo19" class="hidden"> -->
+          <a href="javascript:unhide('interpret19');">bib</a>
+          <a href="https://allennlp.org/interpret">blog</a>
+          <div id="interpret19" class="hidden">
+            <pre>@inproceedings{Wallace2019AllenNLP,
                     Author = {Eric Wallace and Jens Tuyls and Junlin Wang and Sanjay Subramanian and Matt Gardner and Sameer Singh},
                     Booktitle = {Empirical Methods in Natural Language Processing},                            
                     Year = {2019},
                     Title = {AllenNLP Interpret: A Framework for Explaining Predictions of NLP Models}}
                     </pre>
-                </div>
-            </li>
-            <li>        		    
-                    <a href="https://www.spiedigitallibrary.org/conference-proceedings-of-spie/11089/2535410/Improved-regressions-with-convolutional-neural-networks-for-surface-enhanced-Raman/10.1117/12.2535410.short?SSO=1">Improved regressions with convolutional neural networks for surface enhanced Raman scattering sensing of metabolite biomarkers</a><br>
-                    William John Thrift; Cuong Quoc Nguyen; Junlin Wang; Jason Ernest Kahn; Ruijun Dong; Andrew Benjamin Laird; Regina Ragan.<br>
-                   <i> SPIE Nanoscience + Engineering</i> <br>
+          </div>
+        </li>
+        <li>
+          <a
+            href="https://www.spiedigitallibrary.org/conference-proceedings-of-spie/11089/2535410/Improved-regressions-with-convolutional-neural-networks-for-surface-enhanced-Raman/10.1117/12.2535410.short?SSO=1">Improved
+            regressions with convolutional neural networks for surface enhanced Raman scattering sensing of metabolite
+            biomarkers</a><br>
+          William John Thrift; Cuong Quoc Nguyen; Junlin Wang; Jason Ernest Kahn; Ruijun Dong; Andrew Benjamin Laird;
+          Regina Ragan.<br>
+          <i> SPIE Nanoscience + Engineering</i> <br>
 
-                   <a href="javascript:unhide('nano19');">bib</a>
-                   <div id="nano19" class="hidden">
-                       <pre>@proceeding{
+          <a href="javascript:unhide('nano19');">bib</a>
+          <div id="nano19" class="hidden">
+            <pre>@proceeding{
                             author = { William John Thrift,Cuong Quoc Nguyen,Junlin Wang,Jason Ernest Kahn,Ruijun Dong,Andrew Benjamin Laird,Regina Ragan},
                             title = {Improved regressions with convolutional neural networks for surface enhanced Raman scattering sensing of metabolite biomarkers},
                             volume = {11089},
@@ -143,21 +179,23 @@
                             }
                             
                        </pre>
-                   </div>
-               </li>
+          </div>
+        </li>
 
-        </ul>	 
-        <br>
-		</p>
+      </ul>
+      <br>
+      </p>
 
-
-</div>
-    <div class="posts-wrapper" style="clear:both" id = "proj">
-            <h3 style="margin-bottom:0.75em;">Projects</h3>
-            <a href="pages/index.html"> <span>Link to Some of my Projects</span>
 
     </div>
-</div>
+    <div class="posts-wrapper" style="clear:both" id="proj">
+      <h3 style="margin-bottom:0.75em;">Projects</h3>
+      <a href="pages/index.html"> <span>Link to Some of my Projects</span>
+
+    </div>
+    </div>
+  </main>
 
 </body>
+
 </html>
