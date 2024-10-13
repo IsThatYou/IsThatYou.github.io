@@ -82,7 +82,7 @@ img {
 
 a {
 	padding-bottom: 5px;
-	color:  #00848d ;
+	color:  #2a9ba3;
 	text-decoration: none;
 	cursor: pointer;
 }
@@ -248,4 +248,8 @@ div#profile {
     white-space: nowrap;
     vertical-align: baseline;
     border-radius: .25rem;
+}
+
+li {
+    margin-bottom: 100px;
 }
