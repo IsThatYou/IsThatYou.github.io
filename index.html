@@ -28,14 +28,6 @@
 
   <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,700" rel="stylesheet">
 
-  <script>
-    function unhide(divID) {
-      var item = document.getElementById(divID);
-      if (item) {
-        item.className = (item.className == 'hidden') ? 'unhidden' : 'hidden';
-      }
-    }
-  </script>
 
   <script type="text/javascript">
     var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
@@ -58,6 +50,7 @@
           <li><a href="#home">Home</a></li>
           <li><a href="#pub">Publications</a></li>
           <li><a href="#proj">Projects</a></li>
+          <li><a href="#blog">Blog</a></li>
         </ul>
       </div>
     </div>
@@ -102,236 +95,209 @@
 
       <br><br>
 
-    </div>
-    <div class="posts-wrapper" style="clear:both" id="proj">
+      <div class="posts-wrapper" style="clear:both" id="news">
       <h3 style="margin-bottom:0.75em;">News</h3>
-      <p>
-      <ul class="pubs">
-      	<li>
-          I will be presenting at EMNLP 2024!
+      <ul class="news">
+        <li>I will be presenting at EMNLP 2024!</li>
       </ul>
       <br>
-      </p>
-
-    </div>
     </div>
 
 
     <div class="posts-wrapper" style="clear:both" id="pub">
-      <h3 style="margin-bottom:0.75em;">publications</h3>
-      </i>
+      <h3 style="margin-bottom:0.75em;">Publications</h3>
       <p>
       <ul class="pubs">
-        <li style="display: flex; align-items: start; margin-bottom: 35px;">
-          <img src="images/paper_thumbnail/moa.png" alt="Mixture-of-Agents thumbnail" style="width: 200px; height: auto; margin-right: 10px;">
-          <div>
-            <a href="https://arxiv.org/abs/2406.04692" target="_blank" rel="noopener noreferrer"><h4>Mixture-of-Agents Enhances Large Language Model Capabilities</h4>
-            </a><b>Junlin Wang</b>, Jue Wang, Ben Athiwaratkun, Ce Zhang, James Zou <br>
-            <i>arXiv</i> <br>
-            <a href="javascript:unhide('moa2024');">bib</a>
-            <a href="https://github.com/togethercomputer/MoA" target="_blank" rel="noopener noreferrer">code</a>
-            <a href="https://www.together.ai/blog/together-moa" target="_blank" rel="noopener noreferrer">blog</a>
-            <div id="moa2024" class="hidden">
-              <pre>@misc{wang2024mixtureofagentsenhanceslargelanguage,
-                title={Mixture-of-Agents Enhances Large Language Model Capabilities}, 
-                author={Junlin Wang and Jue Wang and Ben Athiwaratkun and Ce Zhang and James Zou},
-                year={2024},
-                eprint={2406.04692},
-                archivePrefix={arXiv},
-                primaryClass={cs.CL},
-                url={https://arxiv.org/abs/2406.04692}, 
-              }
-              </pre>
-            </div>
-          </div>
-        </li>
-        <li style="display: flex; align-items: start;margin-bottom: 35px;">
-          <img src="images/paper_thumbnail/token_econ.png" alt="Token Economies thumbnail" style="width: 200px; height: auto; margin-right: 10px;">
-          <div>
-            <a href="https://arxiv.org/abs/2406.06461" target="_blank" rel="noopener noreferrer"><h4>Reasoning in Token Economies: Budget-Aware Evaluation of LLM Reasoning Strategies</h4>
-            </a><b>Junlin Wang</b>, Siddhartha Jain, Dejiao Zhang, Baishakhi Ray, Varun Kumar, Ben Athiwaratkun.<br>
-            <i>EMNLP 2024</i> <br>
-            <a href="javascript:unhide('reasoningbudget2024');">bib</a>
-            <div id="reasoningbudget2024" class="hidden">
-              <pre>@article{wang2024reasoning,
-                title   = {Reasoning in Token Economies: Budget-Aware Evaluation of LLM Reasoning Strategies},
-                author  = {Junlin Wang and Siddhartha Jain and Dejiao Zhang and Baishakhi Ray and Varun Kumar and Ben Athiwaratkun},
-                year    = {2024},
-                journal = {arXiv preprint arXiv: 2406.06461}
-              }
-              </pre>
-            </div>
-          </div>
-        </li>
-        <li style="display: flex; align-items: start;margin-bottom: 35px;">
-          <img src="images/paper_thumbnail/recall.png" alt="Token Economies thumbnail" style="width: 200px; height: auto; margin-right: 10px;">
-          <div>
-            <a href="https://arxiv.org/abs/2406.15968" target="_blank" rel="noopener noreferrer"><h4>ReCaLL: Membership Inference via Relative Conditional Log-Likelihoods
-            </h4>
-            </a>Roy Xie, <b>Junlin Wang</b>, Ruomin Huang, Minxing Zhang, Rong Ge, Jian Pei, Neil Zhenqiang Gong, Bhuwan Dhingra.<br>
-            <i>EMNLP 2024</i> <br>
-            <a href="javascript:unhide('recall2024');">bib</a>
-            <a href="https://github.com/ruoyuxie/recall" target="_blank" rel="noopener noreferrer">code</a>
-            <a href="https://royxie.com/recall-project-page/" target="_blank" rel="noopener noreferrer">blog</a>
-            <div id="recall2024" class="hidden">
-              <pre>@article{xie2024recall,
-                title   = {ReCaLL: Membership Inference via Relative Conditional Log-Likelihoods},
-                author  = {Roy Xie and Junlin Wang and Ruomin Huang and Minxing Zhang and Rong Ge and Jian Pei and Neil Zhenqiang Gong and Bhuwan Dhingra},
-                year    = {2024},
-                journal = {arXiv preprint arXiv: 2406.15968}
-              }
-              </pre>
-            </div>
-          </div>
-        </li>
-        <li style="display: flex; align-items: start;margin-bottom: 35px;">
-          <img src="images/paper_thumbnail/raccoon.png" alt="Raccoon thumbnail" style="width: 200px; height: auto; margin-right: 10px;">
-          <div>
-            <a href="https://arxiv.org/abs/2406.06737" target="_blank" rel="noopener noreferrer"><h4>Raccoon: Prompt Extraction Benchmark of LLM-Integrated Applications</h4>
-            </a><b>Junlin Wang</b>*, Tianyi Yang*, Roy Xie, Bhuwan Dhingra.<br>
-            <i>ACL 2024 Findings</i> <br>
-            <a href="javascript:unhide('raccoon2024');">bib</a>
-            <a href="https://github.com/M0gician/RaccoonBench" target="_blank" rel="noopener noreferrer">code</a>
-            <div id="raccoon2024" class="hidden">
-              <pre>@article{wang2024raccoon,
-                title   = {Raccoon: Prompt Extraction Benchmark of LLM-Integrated Applications},
-                author  = {Junlin Wang and Tianyi Yang and Roy Xie and Bhuwan Dhingra},
-                year    = {2024},
-                journal = {arXiv preprint arXiv: 2406.06737}
-              }
-              </pre>
-            </div>
-          </div>
-        </li>
-        <li style="display: flex; align-items: start;margin-bottom: 35px;">
-          <img src="images/paper_thumbnail/llm_resistant.png" alt="LLM-Resistant Math Word Problem thumbnail" style="width: 200px; height: auto; margin-right: 10px;">
-          <div>
-            <a href="https://arxiv.org/abs/2402.17916" target="_blank" rel="noopener noreferrer"><h4>LLM-Resistant Math Word Problem Generation via Adversarial Attacks</h4>
-            </a>Roy Xie, Chengxuan Huang, <b>Junlin Wang</b>, Bhuwan Dhingra.<br>
-            <i>EMNLP 2024 Findings</i> <br>
-            <a href="javascript:unhide('LLMR_MWP2024');">bib</a>
-            <a href="https://github.com/ruoyuxie/adversarial_mwps_generation" target="_blank" rel="noopener noreferrer">code</a>
-            <div id="LLMR_MWP2024" class="hidden">
-              <pre>@inproceedings{Xie2024adversarial,
-                title  = {Adversarial Math Word Problem Generation},
-                author = {Roy Xie and Chengxuan Huang and Junlin Wang and Bhuwan Dhingra},
-                year   = {2024},
-                url    = {https://openreview.net/forum?id=bJz5uGzEe6&referrer=%5BAuthor%20Console%5D(%2Fgroup%3Fid%3Daclweb.org%2FACL%2FARR%2F2024%2FJune%2FAuthors%23your-submissions)}
-              }
-              </pre>
-            </div>
-          </div>
-        </li>
-        <li style="display: flex; align-items: start;margin-bottom: 35px;">
-          <img src="images/paper_thumbnail/neurocomparatives.png" alt="NeuroComparatives thumbnail" style="width: 200px; height: auto; margin-right: 10px;">
-          <div>
-            <a href="https://arxiv.org/abs/2305.04978" target="_blank" rel="noopener noreferrer"><h4>NeuroComparatives: Neuro-Symbolic Distillation of Comparative Knowledge</h4>
-            </a>Phillip Howard*, <b>Junlin Wang</b>*, Vasudev Lal, Gadi Singer, Yejin Choi, Swabha Swayamdipta.<br>
-            <i>NAACL 2024 Findings</i> <br>
-            <a href="javascript:unhide('nc2023');">bib</a>
-            <div id="nc2023" class="hidden">
-              <pre>@misc{howard2023neurocomparatives,
-                title={NeuroComparatives: Neuro-Symbolic Distillation of Comparative Knowledge}, 
-                author={Phillip Howard and Junlin Wang and Vasudev Lal and Gadi Singer and Yejin Choi and Swabha Swayamdipta},
-                year={2023},
-                eprint={2305.04978},
-                archivePrefix={arXiv},
-                primaryClass={cs.CL}
-          }
-              </pre>
-            </div>
-          </div>
-        </li>
-        <li style="display: flex; align-items: start;margin-bottom: 35px;">
-          <img src="images/paper_thumbnail/maestro.png" alt="Maestro thumbnail" style="width: 200px; height: 130px; margin-right: 10px;">
-          <div>
-            <a href="https://arxiv.org/abs/2306.08238" target="_blank" rel="noopener noreferrer"><h4>Maestro: A Gamified Platform for Teaching AI Robustness</h4>
-            </a>Margarita Geleta, Jiacen Xu, Manikanta Loya, <b>Junlin Wang</b>, Sameer Singh, Zhou Li and Sergio Gago Masague.<br>
-            <i>EAAI 2023</i> <br>
-            <a href="javascript:unhide('maestro2023');">bib</a>
-            <div id="maestro2023" class="hidden">
-              <pre>@inproceedings{DBLP:conf/aaai/GeletaXLW00M23,
-                author    = {Margarita Geleta and Jiacen Xu and Manikanta Loya and Junlin Wang and Sameer Singh and Zhou Li and Sergio Gago Masagu{\'{e}}},
-                editor    = {Brian Williams and Yiling Chen and Jennifer Neville},
-                title     = {Maestro: {A} Gamified Platform for Teaching {AI} Robustness},
-                booktitle = {Thirty-Seventh {AAAI} Conference on Artificial Intelligence, {AAAI} 2023, Thirty-Fifth Conference on Innovative Applications of Artificial Intelligence, {IAAI} 2023, Thirteenth Symposium on Educational Advances in Artificial Intelligence, {EAAI} 2023, Washington, DC, USA, February 7-14, 2023},
-                pages     = {15816-15824},
-                publisher = {{AAAI} Press},
-                year      = {2023},
-                url       = {https://doi.org/10.1609/aaai.v37i13.26878},
-                doi       = {10.1609/AAAI.V37I13.26878},
-                timestamp = {Sun, 12 Nov 2023 02:11:30 +0100},
-                biburl    = {https://dblp.org/rec/conf/aaai/GeletaXLW00M23.bib},
-                bibsource = {dblp computer science bibliography, https://dblp.org}
-              }
-                      </pre>
-            </div>
-          </div>
-        </li>
-        <li style="display: flex; align-items: start;margin-bottom: 35px;">
-          <img src="images/paper_thumbnail/gradient_manipulable.png" alt="Gradient-based Analysis thumbnail" style="width: 200px; height: auto; margin-right: 10px;">
-          <div>
-            <a href="https://arxiv.org/pdf/2010.05419.pdf" target="_blank" rel="noopener noreferrer"><h4>Gradient-based Analysis of NLP Models is Manipulable</h4>
-            </a><b>Junlin Wang</b>*, Jens Tuyls*, Eric Wallace and Sameer Singh.<br>
-            <i>EMNLP 2020 Findings</i> <br>
-            We found that gradient-based interpretation techniques are not faithful<br>
-            <a href="javascript:unhide('manip2020');">bib</a>
-            <a href="http://ucinlp.github.io/facade">blog</a>
-            <div id="manip2020" class="hidden">
-              <pre>@inproceedings{wang2020gradientbased,
-                      Author = {Junlin Wang, Jens Tuyls, Eric Wallace and Sameer Singh},
-                      Booktitle = {Empirical Methods in Natural Language Processing Findings},                            
-                      Year = {2020},
-                      Title = {Gradient-based Analysis of NLP Models is Manipulable}}
-                      </pre>
-            </div>
-          </div>
-        </li>
-        <li style="display: flex; align-items: start;margin-bottom: 35px;">
-          <img src="images/paper_thumbnail/allennlp_interpret.png" alt="AllenNLP Interpret thumbnail" style="width: 200px; height: auto; margin-right: 10px;">
-          <div>
-            <a href="https://arxiv.org/abs/1909.09251" target="_blank" rel="noopener noreferrer"><h4>AllenNLP Interpret: A Framework for Explaining Predictions of NLP Models</h4>
-            </a>Eric Wallace, Jens Tuyls, <b>Junlin Wang</b>, Sanjay Subramanian, Matt Gardner, and Sameer Singh.<br>
-            <i>Demo at EMNLP 2019</i> &nbsp;&nbsp;&nbsp; <b><i>Best Demo Award</i></b><br>
-            An open-source toolkit built on top of AllenNLP that makes it easy to interpret NLP models.<br>
-            <a href="javascript:unhide('interpret19');">bib</a>
-            <a href="https://allennlp.org/interpret" target="_blank" rel="noopener noreferrer">blog</a>
-            <div id="interpret19" class="hidden">
-              <pre>@inproceedings{Wallace2019AllenNLP,
-                      Author = {Eric Wallace and Jens Tuyls and Junlin Wang and Sanjay Subramanian and Matt Gardner and Sameer Singh},
-                      Booktitle = {Empirical Methods in Natural Language Processing},                            
-                      Year = {2019},
-                      Title = {AllenNLP Interpret: A Framework for Explaining Predictions of NLP Models}}
-                      </pre>
-            </div>
-          </div>
-        </li>
-        <!-- <li>
-          <a
-            href="https://www.spiedigitallibrary.org/conference-proceedings-of-spie/11089/2535410/Improved-regressions-with-convolutional-neural-networks-for-surface-enhanced-Raman/10.1117/12.2535410.short?SSO=1">Improved
-            regressions with convolutional neural networks for surface enhanced Raman scattering sensing of metabolite
-            biomarkers</a><br>
-          William John Thrift; Cuong Quoc Nguyen; Junlin Wang; Jason Ernest Kahn; Ruijun Dong; Andrew Benjamin Laird;
-          Regina Ragan.<br>
-          <i> SPIE Nanoscience + Engineering</i> <br>
-
-          <a href="javascript:unhide('nano19');">bib</a>
-          <div id="nano19" class="hidden">
-            <pre>@proceeding{
-                            author = { William John Thrift,Cuong Quoc Nguyen,Junlin Wang,Jason Ernest Kahn,Ruijun Dong,Andrew Benjamin Laird,Regina Ragan},
-                            title = {Improved regressions with convolutional neural networks for surface enhanced Raman scattering sensing of metabolite biomarkers},
-                            volume = {11089},
-                            year = {2019},
-                            doi = {10.1117/12.2535410},
-                            URL = {https://doi.org/10.1117/12.2535410},
-                            eprint = {}
-                            }
-                            
-                       </pre>
-          </div>
-        </li> -->
-
-      </ul>
+  <li class="publication">
+    <img class="pub-thumb" src="images/paper_thumbnail/moa.png" alt="Mixture-of-Agents thumbnail">
+    <div class="pub-info">
+      <h4><a href="https://arxiv.org/abs/2406.04692" target="_blank" rel="noopener noreferrer">Mixture-of-Agents Enhances Large Language Model Capabilities</a></h4>
+      <p><b>Junlin Wang</b>, Jue Wang, Ben Athiwaratkun, Ce Zhang, James Zou<br><i>arXiv</i></p>
+      <div class="pub-links">
+        <a class="btn btn-sm btn-outline-primary" href="https://arxiv.org/abs/2406.04692" target="_blank" rel="noopener noreferrer">paper</a>
+        <a class="btn btn-sm btn-outline-primary" href="https://github.com/togethercomputer/MoA" target="_blank" rel="noopener noreferrer">code</a>
+        <a class="btn btn-sm btn-outline-secondary" href="https://www.together.ai/blog/together-moa" target="_blank" rel="noopener noreferrer">blog</a>
+      </div>
+      <details>
+        <summary>BibTeX</summary>
+<pre>@misc{wang2024mixtureofagentsenhanceslargelanguage,
+  title={Mixture-of-Agents Enhances Large Language Model Capabilities},
+  author={Junlin Wang and Jue Wang and Ben Athiwaratkun and Ce Zhang and James Zou},
+  year={2024},
+  eprint={2406.04692},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL},
+  url={https://arxiv.org/abs/2406.04692},
+}</pre>
+      </details>
+    </div>
+  </li>
+  <li class="publication">
+    <img class="pub-thumb" src="images/paper_thumbnail/token_econ.png" alt="Token Economies thumbnail">
+    <div class="pub-info">
+      <h4><a href="https://arxiv.org/abs/2406.06461" target="_blank" rel="noopener noreferrer">Reasoning in Token Economies: Budget-Aware Evaluation of LLM Reasoning Strategies</a></h4>
+      <p><b>Junlin Wang</b>, Siddhartha Jain, Dejiao Zhang, Baishakhi Ray, Varun Kumar, Ben Athiwaratkun<br><i>EMNLP 2024</i></p>
+      <div class="pub-links">
+        <a class="btn btn-sm btn-outline-primary" href="https://arxiv.org/abs/2406.06461" target="_blank" rel="noopener noreferrer">paper</a>
+      </div>
+      <details>
+        <summary>BibTeX</summary>
+<pre>@article{wang2024reasoning,
+  title   = {Reasoning in Token Economies: Budget-Aware Evaluation of LLM Reasoning Strategies},
+  author  = {Junlin Wang and Siddhartha Jain and Dejiao Zhang and Baishakhi Ray and Varun Kumar and Ben Athiwaratkun},
+  year    = {2024},
+  journal = {arXiv preprint arXiv: 2406.06461}
+}</pre>
+      </details>
+    </div>
+  </li>
+  <li class="publication">
+    <img class="pub-thumb" src="images/paper_thumbnail/recall.png" alt="ReCaLL thumbnail">
+    <div class="pub-info">
+      <h4><a href="https://arxiv.org/abs/2406.15968" target="_blank" rel="noopener noreferrer">ReCaLL: Membership Inference via Relative Conditional Log-Likelihoods</a></h4>
+      <p>Roy Xie, <b>Junlin Wang</b>, Ruomin Huang, Minxing Zhang, Rong Ge, Jian Pei, Neil Zhenqiang Gong, Bhuwan Dhingra<br><i>EMNLP 2024</i></p>
+      <div class="pub-links">
+        <a class="btn btn-sm btn-outline-primary" href="https://arxiv.org/abs/2406.15968" target="_blank" rel="noopener noreferrer">paper</a>
+        <a class="btn btn-sm btn-outline-primary" href="https://github.com/ruoyuxie/recall" target="_blank" rel="noopener noreferrer">code</a>
+        <a class="btn btn-sm btn-outline-secondary" href="https://royxie.com/recall-project-page/" target="_blank" rel="noopener noreferrer">blog</a>
+      </div>
+      <details>
+        <summary>BibTeX</summary>
+<pre>@article{xie2024recall,
+  title   = {ReCaLL: Membership Inference via Relative Conditional Log-Likelihoods},
+  author  = {Roy Xie and Junlin Wang and Ruomin Huang and Minxing Zhang and Rong Ge and Jian Pei and Neil Zhenqiang Gong and Bhuwan Dhingra},
+  year    = {2024},
+  journal = {arXiv preprint arXiv: 2406.15968}
+}</pre>
+      </details>
+    </div>
+  </li>
+  <li class="publication">
+    <img class="pub-thumb" src="images/paper_thumbnail/raccoon.png" alt="Raccoon thumbnail">
+    <div class="pub-info">
+      <h4><a href="https://arxiv.org/abs/2406.06737" target="_blank" rel="noopener noreferrer">Raccoon: Prompt Extraction Benchmark of LLM-Integrated Applications</a></h4>
+      <p><b>Junlin Wang</b>*, Tianyi Yang*, Roy Xie, Bhuwan Dhingra<br><i>ACL 2024 Findings</i></p>
+      <div class="pub-links">
+        <a class="btn btn-sm btn-outline-primary" href="https://arxiv.org/abs/2406.06737" target="_blank" rel="noopener noreferrer">paper</a>
+        <a class="btn btn-sm btn-outline-primary" href="https://github.com/M0gician/RaccoonBench" target="_blank" rel="noopener noreferrer">code</a>
+      </div>
+      <details>
+        <summary>BibTeX</summary>
+<pre>@article{wang2024raccoon,
+  title   = {Raccoon: Prompt Extraction Benchmark of LLM-Integrated Applications},
+  author  = {Junlin Wang and Tianyi Yang and Roy Xie and Bhuwan Dhingra},
+  year    = {2024},
+  journal = {arXiv preprint arXiv: 2406.06737}
+}</pre>
+      </details>
+    </div>
+  </li>
+  <li class="publication">
+    <img class="pub-thumb" src="images/paper_thumbnail/llm_resistant.png" alt="LLM-Resistant Math Word Problem thumbnail">
+    <div class="pub-info">
+      <h4><a href="https://arxiv.org/abs/2402.17916" target="_blank" rel="noopener noreferrer">LLM-Resistant Math Word Problem Generation via Adversarial Attacks</a></h4>
+      <p>Roy Xie, Chengxuan Huang, <b>Junlin Wang</b>, Bhuwan Dhingra<br><i>EMNLP 2024 Findings</i></p>
+      <div class="pub-links">
+        <a class="btn btn-sm btn-outline-primary" href="https://arxiv.org/abs/2402.17916" target="_blank" rel="noopener noreferrer">paper</a>
+        <a class="btn btn-sm btn-outline-primary" href="https://github.com/ruoyuxie/adversarial_mwps_generation" target="_blank" rel="noopener noreferrer">code</a>
+      </div>
+      <details>
+        <summary>BibTeX</summary>
+<pre>@inproceedings{Xie2024adversarial,
+  title  = {Adversarial Math Word Problem Generation},
+  author = {Roy Xie and Chengxuan Huang and Junlin Wang and Bhuwan Dhingra},
+  year   = {2024},
+  url    = {https://openreview.net/forum?id=bJz5uGzEe6&referrer=%5BAuthor%20Console%5D(%2Fgroup%3Fid%3Daclweb.org%2FACL%2FARR%2F2024%2FJune%2FAuthors%23your-submissions)}
+}</pre>
+      </details>
+    </div>
+  </li>
+  <li class="publication">
+    <img class="pub-thumb" src="images/paper_thumbnail/neurocomparatives.png" alt="NeuroComparatives thumbnail">
+    <div class="pub-info">
+      <h4><a href="https://arxiv.org/abs/2305.04978" target="_blank" rel="noopener noreferrer">NeuroComparatives: Neuro-Symbolic Distillation of Comparative Knowledge</a></h4>
+      <p>Phillip Howard*, <b>Junlin Wang</b>*, Vasudev Lal, Gadi Singer, Yejin Choi, Swabha Swayamdipta<br><i>NAACL 2024 Findings</i></p>
+      <div class="pub-links">
+        <a class="btn btn-sm btn-outline-primary" href="https://arxiv.org/abs/2305.04978" target="_blank" rel="noopener noreferrer">paper</a>
+      </div>
+      <details>
+        <summary>BibTeX</summary>
+<pre>@misc{howard2023neurocomparatives,
+  title={NeuroComparatives: Neuro-Symbolic Distillation of Comparative Knowledge},
+  author={Phillip Howard and Junlin Wang and Vasudev Lal and Gadi Singer and Yejin Choi and Swabha Swayamdipta},
+  year={2023},
+  eprint={2305.04978},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL}
+}</pre>
+      </details>
+    </div>
+  </li>
+  <li class="publication">
+    <img class="pub-thumb" src="images/paper_thumbnail/maestro.png" alt="Maestro thumbnail">
+    <div class="pub-info">
+      <h4><a href="https://arxiv.org/abs/2306.08238" target="_blank" rel="noopener noreferrer">Maestro: A Gamified Platform for Teaching AI Robustness</a></h4>
+      <p>Margarita Geleta, Jiacen Xu, Manikanta Loya, <b>Junlin Wang</b>, Sameer Singh, Zhou Li and Sergio Gago Masague<br><i>EAAI 2023</i></p>
+      <div class="pub-links">
+        <a class="btn btn-sm btn-outline-primary" href="https://arxiv.org/abs/2306.08238" target="_blank" rel="noopener noreferrer">paper</a>
+      </div>
+      <details>
+        <summary>BibTeX</summary>
+<pre>@inproceedings{DBLP:conf/aaai/GeletaXLW00M23,
+  author    = {Margarita Geleta and Jiacen Xu and Manikanta Loya and Junlin Wang and Sameer Singh and Zhou Li and Sergio Gago Masagu{'{e}}},
+  editor    = {Brian Williams and Yiling Chen and Jennifer Neville},
+  title     = {Maestro: {A} Gamified Platform for Teaching {AI} Robustness},
+  booktitle = {Thirty-Seventh {AAAI} Conference on Artificial Intelligence, {AAAI} 2023, Thirty-Fifth Conference on Innovative Applications of Artificial Intelligence, {IAAI} 2023, Thirteenth Symposium on Educational Advances in Artificial Intelligence, {EAAI} 2023, Washington, DC, USA, February 7-14, 2023},
+  pages     = {15816-15824},
+  publisher = {{AAAI} Press},
+  year      = {2023},
+  url       = {https://doi.org/10.1609/aaai.v37i13.26878},
+  doi       = {10.1609/AAAI.V37I13.26878}
+}</pre>
+      </details>
+    </div>
+  </li>
+  <li class="publication">
+    <img class="pub-thumb" src="images/paper_thumbnail/gradient_manipulable.png" alt="Gradient-based Analysis thumbnail">
+    <div class="pub-info">
+      <h4><a href="https://arxiv.org/pdf/2010.05419.pdf" target="_blank" rel="noopener noreferrer">Gradient-based Analysis of NLP Models is Manipulable</a></h4>
+      <p><b>Junlin Wang</b>*, Jens Tuyls*, Eric Wallace and Sameer Singh<br><i>EMNLP 2020 Findings</i></p>
+      <div class="pub-links">
+        <a class="btn btn-sm btn-outline-primary" href="https://arxiv.org/pdf/2010.05419.pdf" target="_blank" rel="noopener noreferrer">paper</a>
+        <a class="btn btn-sm btn-outline-secondary" href="http://ucinlp.github.io/facade" target="_blank" rel="noopener noreferrer">blog</a>
+      </div>
+      <details>
+        <summary>BibTeX</summary>
+<pre>@inproceedings{wang2020gradientbased,
+  Author = {Junlin Wang, Jens Tuyls, Eric Wallace and Sameer Singh},
+  Booktitle = {Empirical Methods in Natural Language Processing Findings},
+  Year = {2020},
+  Title = {Gradient-based Analysis of NLP Models is Manipulable}
+}</pre>
+      </details>
+    </div>
+  </li>
+  <li class="publication">
+    <img class="pub-thumb" src="images/paper_thumbnail/allennlp_interpret.png" alt="AllenNLP Interpret thumbnail">
+    <div class="pub-info">
+      <h4><a href="https://arxiv.org/abs/1909.09251" target="_blank" rel="noopener noreferrer">AllenNLP Interpret: A Framework for Explaining Predictions of NLP Models</a></h4>
+      <p>Eric Wallace, Jens Tuyls, <b>Junlin Wang</b>, Sanjay Subramanian, Matt Gardner, and Sameer Singh<br><i>Demo at EMNLP 2019</i> &nbsp;&nbsp;&nbsp; <b><i>Best Demo Award</i></b></p>
+      <div class="pub-links">
+        <a class="btn btn-sm btn-outline-primary" href="https://arxiv.org/abs/1909.09251" target="_blank" rel="noopener noreferrer">paper</a>
+        <a class="btn btn-sm btn-outline-secondary" href="https://allennlp.org/interpret" target="_blank" rel="noopener noreferrer">blog</a>
+      </div>
+      <details>
+        <summary>BibTeX</summary>
+<pre>@inproceedings{Wallace2019AllenNLP,
+  Author = {Eric Wallace and Jens Tuyls and Junlin Wang and Sanjay Subramanian and Matt Gardner and Sameer Singh},
+  Booktitle = {Empirical Methods in Natural Language Processing},
+  Year = {2019},
+  Title = {AllenNLP Interpret: A Framework for Explaining Predictions of NLP Models}
+}</pre>
+      </details>
+    </div>
+  </li>
+</ul>
       <br>
       </p>
 
@@ -339,8 +305,15 @@
     </div>
     <div class="posts-wrapper" style="clear:both" id="proj">
       <h3 style="margin-bottom:0.75em;">Projects</h3>
-      <a href="pages/index.html"> <span>Link to some of my for fun projects</span>
+      <a href="pages/index.html"><span>Link to some of my for fun projects</span></a>
 
+    </div>
+    <div class="posts-wrapper" style="clear:both" id="blog">
+      <h3 style="margin-bottom:0.75em;">Blog Posts</h3>
+      <ul class="blogs">
+        <li><a href="http://ucinlp.github.io/facade" target="_blank" rel="noopener noreferrer">Gradient-based Analysis of NLP Models is Manipulable</a> - 2020</li>
+        <li><a href="https://allennlp.org/interpret" target="_blank" rel="noopener noreferrer">AllenNLP Interpret: A Framework for Explaining Predictions of NLP Models</a> - 2019</li>
+      </ul>
     </div>
     </div>
   </main>

@@ -66,13 +66,14 @@ h2 {
 }
 
 body {
-	font-family: -apple-system,".SFNSText-Regular","San Francisco","Roboto","Segoe UI","Helvetica Neue","Lucida Grande",Arial,sans-serif;
-	color: #000;
+        font-family: -apple-system,".SFNSText-Regular","San Francisco","Roboto","Segoe UI","Helvetica Neue","Lucida Grande",Arial,sans-serif;
+        color: #000;
 
-	height: 100%;
-	margin: 0;
-	background-repeat: no-repeat;
-	background-attachment: fixed;
+        height: 100%;
+        margin: 0;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-color: #f8f9fa;
 }
 
 img {
@@ -175,14 +176,7 @@ ul.pubs > li{
 }
 
 
-.hidden {
-    display: none;
-}
-.unhidden {
-    display: table;
-    position:relative;
-/*    width:80%;
-*/}
+/* legacy visibility helpers no longer used */
 
 pre {
 	background-color: #f5f5f5;
@@ -251,5 +245,32 @@ div#profile {
 }
 
 li {
-    margin-bottom: 100px;
+    margin-bottom: 0.5em;
+}
+
+.publication {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 35px;
+}
+
+.pub-thumb {
+    width: 200px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.pub-links .btn {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+details summary {
+    cursor: pointer;
+    color: #2a9ba3;
+    margin-top: 5px;
+}
+
+.blogs li {
+    margin-bottom: 0.4em;
 }
