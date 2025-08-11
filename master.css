@@ -274,3 +274,16 @@ details summary {
 .blogs li {
     margin-bottom: 0.4em;
 }
+
+
+@media (min-width: 768px) {
+  #profile img { width: 220px; height: 220px; }
+}
+
+#profile img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;         /* crops nicely if the source isn’t square */
+  display: block;
+}
