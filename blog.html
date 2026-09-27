@@ -25,23 +25,10 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Geist+Mono:wght@400;500&display=swap">
   <style>
   :root {
+    color-scheme: light;
     --bg: #F5F5F3; --ink: #15171A; --text: #2E3136; --muted: #6E7278; --line: #DCDDDA;
     --soft: #ECEDEA; --accent: #22418F; --accent-soft: #E4E9F5; --award: #8C6A1E;
     --link: #B8C3E0; --shadow: 0 1px 2px rgba(15,18,22,.06), 0 8px 24px rgba(15,18,22,.08);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      color-scheme: dark;
-      --bg: #0B1322; --ink: #EEF1F6; --text: #C5CDDA; --muted: #8793A6; --line: #1E2A3F;
-      --soft: #111B2E; --accent: #9DB5F2; --accent-soft: #172544; --award: #D9B35C;
-      --link: #34466E; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
-    }
-  }
-  :root[data-theme="dark"] {
-    color-scheme: dark;
-    --bg: #0B1322; --ink: #EEF1F6; --text: #C5CDDA; --muted: #8793A6; --line: #1E2A3F;
-    --soft: #111B2E; --accent: #9DB5F2; --accent-soft: #172544; --award: #D9B35C;
-    --link: #34466E; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
   }
   * { box-sizing: border-box; }
   [hidden] { display: none !important; }
@@ -57,6 +44,7 @@
   .top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 24px; padding-block: 56px 32px; }
   .kicker, .figure, .mark, .colophon { display: none; }
   section.block.first { border-top: 0; margin-top: 0; padding-top: 0; }
+  .pub.post { grid-template-columns: minmax(0, 1fr); }
   .intro { margin: -8px 0 30px; max-width: 62ch; color: var(--muted); }
   .top nav a[aria-current="page"] { color: var(--ink); text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; }
   .top h1 { margin: 0; color: var(--ink); font-size: clamp(40px, 6vw, 56px); line-height: 1; font-weight: 700; letter-spacing: -.035em; }
@@ -143,8 +131,6 @@ ap: 8px 20px; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
 body { --chalk: #A9573C; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) body { --chalk: #D9B35C; } }
-:root[data-theme="dark"] body { --chalk: #D9B35C; }
 
 body .top { border-bottom: 1px solid var(--line); padding-bottom: 26px; margin-bottom: 42px; }
 body .top h1 { font-family: "EB Garamond", Garamond, Georgia, serif; font-weight: 500; letter-spacing: -.015em; font-size: clamp(46px, 6.4vw, 68px); }
@@ -203,8 +189,7 @@ body .mark { display: block; width: 18px; height: 18px; fill: none; stroke: var(
 @media (prefers-reduced-motion: reduce) {
   body .figure * { animation: none; stroke-dashoffset: 0; }
   body .figure .tk { animation: none; opacity: 1; }
-}
-</style>
+}</style>
 
 <div class="page">
   <header class="top">
@@ -221,8 +206,15 @@ body .mark { display: block; width: 18px; height: 18px; fill: none; stroke: var(
       <h2>Blog</h2>
       <p class="intro">Blog posts and project write-ups about my research, newest first.</p>
       <ul class="pubs" data-cat="all">
-      <li class="pub year-start" data-year="2026">
-        <a class="thumb" href="https://www.together.ai/blog/dsgym" target="_blank" rel="noopener noreferrer" tabindex="-1"><img loading="lazy" src="images/paper_thumbnail/dsgym.png" alt=""></a>
+      <li class="pub post year-start" data-year="2026">
+        <div class="pub-body">
+          <h3><a href="https://blog.alexisfox.dev/arcagi3" target="_blank" rel="noopener noreferrer">Hill-climbing ARC-AGI-3</a></h3>
+          <p class="authors">Blog post on blog.alexisfox.dev</p>
+          <p class="venue">arXiv 2026</p>
+          <div class="actions"><a class="ib primary" href="https://blog.alexisfox.dev/arcagi3" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span>Read post</span></a><a class="ib" href="paper" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg><span>Paper</span></a></div>
+        </div>
+      </li>
+      <li class="pub post" data-year="2026">
         <div class="pub-body">
           <h3><a href="https://www.together.ai/blog/dsgym" target="_blank" rel="noopener noreferrer">DSGym: A Holistic Framework for Evaluating and Training Data Science Agents</a></h3>
           <p class="authors">Blog post on together.ai</p>
@@ -230,8 +222,7 @@ body .mark { display: block; width: 18px; height: 18px; fill: none; stroke: var(
           <div class="actions"><a class="ib primary" href="https://www.together.ai/blog/dsgym" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span>Read post</span></a><a class="ib" href="paper" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg><span>Paper</span></a></div>
         </div>
       </li>
-      <li class="pub year-start" data-year="2025">
-        <a class="thumb" href="https://www.together.ai/blog/moaa" target="_blank" rel="noopener noreferrer" tabindex="-1"><img loading="lazy" src="images/paper_thumbnail/alignment.png" alt=""></a>
+      <li class="pub post year-start" data-year="2025">
         <div class="pub-body">
           <h3><a href="https://www.together.ai/blog/moaa" target="_blank" rel="noopener noreferrer">Improving Model Alignment Through Collective Intelligence of Open-Source LLMs</a></h3>
           <p class="authors">Blog post on together.ai</p>
@@ -239,8 +230,7 @@ body .mark { display: block; width: 18px; height: 18px; fill: none; stroke: var(
           <div class="actions"><a class="ib primary" href="https://www.together.ai/blog/moaa" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span>Read post</span></a><a class="ib" href="paper" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg><span>Paper</span></a></div>
         </div>
       </li>
-      <li class="pub year-start" data-year="2024">
-        <a class="thumb" href="https://www.together.ai/blog/together-moa" target="_blank" rel="noopener noreferrer" tabindex="-1"><img loading="lazy" src="images/paper_thumbnail/moa.png" alt=""></a>
+      <li class="pub post year-start" data-year="2024">
         <div class="pub-body">
           <h3><a href="https://www.together.ai/blog/together-moa" target="_blank" rel="noopener noreferrer">Mixture-of-Agents Enhances Large Language Model Capabilities</a></h3>
           <p class="authors">Blog post on together.ai</p>
@@ -248,17 +238,7 @@ body .mark { display: block; width: 18px; height: 18px; fill: none; stroke: var(
           <div class="actions"><a class="ib primary" href="https://www.together.ai/blog/together-moa" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span>Read post</span></a><a class="ib" href="paper" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg><span>Paper</span></a></div>
         </div>
       </li>
-      <li class="pub" data-year="2024">
-        <a class="thumb" href="https://royxie.com/recall-project-page/" target="_blank" rel="noopener noreferrer" tabindex="-1"><img loading="lazy" src="images/paper_thumbnail/recall.png" alt=""></a>
-        <div class="pub-body">
-          <h3><a href="https://royxie.com/recall-project-page/" target="_blank" rel="noopener noreferrer">ReCaLL: Membership Inference via Relative Conditional Log-Likelihoods</a></h3>
-          <p class="authors">Blog post on royxie.com</p>
-          <p class="venue">EMNLP 2024</p>
-          <div class="actions"><a class="ib primary" href="https://royxie.com/recall-project-page/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span>Read post</span></a><a class="ib" href="paper" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg><span>Paper</span></a></div>
-        </div>
-      </li>
-      <li class="pub year-start" data-year="2020">
-        <a class="thumb" href="http://ucinlp.github.io/facade" target="_blank" rel="noopener noreferrer" tabindex="-1"><img loading="lazy" src="images/paper_thumbnail/gradient_manipulable.png" alt=""></a>
+      <li class="pub post year-start" data-year="2020">
         <div class="pub-body">
           <h3><a href="http://ucinlp.github.io/facade" target="_blank" rel="noopener noreferrer">Gradient-based Analysis of NLP Models is Manipulable</a></h3>
           <p class="authors">Blog post on ucinlp.github.io</p>
@@ -266,8 +246,7 @@ body .mark { display: block; width: 18px; height: 18px; fill: none; stroke: var(
           <div class="actions"><a class="ib primary" href="http://ucinlp.github.io/facade" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span>Read post</span></a><a class="ib" href="paper" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg><span>Paper</span></a></div>
         </div>
       </li>
-      <li class="pub year-start" data-year="2019">
-        <a class="thumb" href="https://allennlp.org/interpret" target="_blank" rel="noopener noreferrer" tabindex="-1"><img loading="lazy" src="images/paper_thumbnail/allennlp_interpret.png" alt=""></a>
+      <li class="pub post year-start" data-year="2019">
         <div class="pub-body">
           <h3><a href="https://allennlp.org/interpret" target="_blank" rel="noopener noreferrer">AllenNLP Interpret: A Framework for Explaining Predictions of NLP Models</a></h3>
           <p class="authors">Blog post on allennlp.org</p>

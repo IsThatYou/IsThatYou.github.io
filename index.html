@@ -25,23 +25,10 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Geist+Mono:wght@400;500&display=swap">
   <style>
   :root {
+    color-scheme: light;
     --bg: #F5F5F3; --ink: #15171A; --text: #2E3136; --muted: #6E7278; --line: #DCDDDA;
     --soft: #ECEDEA; --accent: #22418F; --accent-soft: #E4E9F5; --award: #8C6A1E;
     --link: #B8C3E0; --shadow: 0 1px 2px rgba(15,18,22,.06), 0 8px 24px rgba(15,18,22,.08);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      color-scheme: dark;
-      --bg: #0B1322; --ink: #EEF1F6; --text: #C5CDDA; --muted: #8793A6; --line: #1E2A3F;
-      --soft: #111B2E; --accent: #9DB5F2; --accent-soft: #172544; --award: #D9B35C;
-      --link: #34466E; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
-    }
-  }
-  :root[data-theme="dark"] {
-    color-scheme: dark;
-    --bg: #0B1322; --ink: #EEF1F6; --text: #C5CDDA; --muted: #8793A6; --line: #1E2A3F;
-    --soft: #111B2E; --accent: #9DB5F2; --accent-soft: #172544; --award: #D9B35C;
-    --link: #34466E; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
   }
   * { box-sizing: border-box; }
   [hidden] { display: none !important; }
@@ -57,6 +44,7 @@
   .top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 24px; padding-block: 56px 32px; }
   .kicker, .figure, .mark, .colophon { display: none; }
   section.block.first { border-top: 0; margin-top: 0; padding-top: 0; }
+  .pub.post { grid-template-columns: minmax(0, 1fr); }
   .intro { margin: -8px 0 30px; max-width: 62ch; color: var(--muted); }
   .top nav a[aria-current="page"] { color: var(--ink); text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; }
   .top h1 { margin: 0; color: var(--ink); font-size: clamp(40px, 6vw, 56px); line-height: 1; font-weight: 700; letter-spacing: -.035em; }
@@ -143,8 +131,6 @@
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
 body { --chalk: #A9573C; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) body { --chalk: #D9B35C; } }
-:root[data-theme="dark"] body { --chalk: #D9B35C; }
 
 body .top { border-bottom: 1px solid var(--line); padding-bottom: 26px; margin-bottom: 42px; }
 body .top h1 { font-family: "EB Garamond", Garamond, Georgia, serif; font-weight: 500; letter-spacing: -.015em; font-size: clamp(46px, 6.4vw, 68px); }
@@ -203,8 +189,7 @@ body .mark { display: block; width: 18px; height: 18px; fill: none; stroke: var(
 @media (prefers-reduced-motion: reduce) {
   body .figure * { animation: none; stroke-dashoffset: 0; }
   body .figure .tk { animation: none; opacity: 1; }
-}
-</style>
+}</style>
 
 <div class="page">
   <header class="top">
