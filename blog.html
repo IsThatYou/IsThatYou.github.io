@@ -44,8 +44,12 @@
   .top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 24px; padding-block: 56px 32px; }
   .kicker, .figure, .mark, .colophon { display: none; }
   section.block.first { border-top: 0; margin-top: 0; padding-top: 0; }
-  .pub.post { grid-template-columns: minmax(0, 1fr); }
-  .pub.post .authors { margin-bottom: 10px; }
+  .pubs.posts { gap: 14px; }
+  .pub.post { grid-template-columns: minmax(0, 1fr) 150px 44px; column-gap: 18px; align-items: baseline; }
+  .pub.post h3 { margin: 0; font-size: 19px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pub.post .host { font-size: 13.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pub.post .pp { font-size: 13.5px; text-align: right; }
+  @media (max-width: 560px) { .pub.post { grid-template-columns: minmax(0, 1fr) auto; } .pub.post .host { display: none; } }
   .intro { margin: -8px 0 30px; max-width: 62ch; color: var(--muted); }
   .top nav a[aria-current="page"] { color: var(--ink); text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; }
   .top h1 { margin: 0; color: var(--ink); font-size: clamp(40px, 6vw, 56px); line-height: 1; font-weight: 700; letter-spacing: -.035em; }
@@ -206,55 +210,27 @@ body .mark { display: block; width: 18px; height: 18px; fill: none; stroke: var(
     <section class="block first" id="blog">
       <h2>Blog</h2>
       <p class="intro">Blog posts, newest first.</p>
-      <ul class="pubs" data-cat="all">
+      <ul class="pubs posts" data-cat="all">
       <li class="pub post year-start" data-year="2026">
-        <div class="pub-body">
-          <h3><a href="https://modal.com/blog/kimi-k3-by-moonshot-now-available-on-modal" target="_blank" rel="noopener noreferrer">Kimi K3 by Moonshot now available on Modal</a></h3>
-          <p class="authors">modal.com</p>
-          <div class="actions"><a class="ib primary" href="https://modal.com/blog/kimi-k3-by-moonshot-now-available-on-modal" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span>Read post</span></a></div>
-        </div>
+        <h3><a href="https://modal.com/blog/kimi-k3-by-moonshot-now-available-on-modal" target="_blank" rel="noopener noreferrer" title="Kimi K3 by Moonshot now available on Modal">Kimi K3 by Moonshot now available on Modal</a></h3><span class="host">modal.com</span><span class="pp"></span>
       </li>
       <li class="pub post" data-year="2026">
-        <div class="pub-body">
-          <h3><a href="https://blog.alexisfox.dev/arcagi3" target="_blank" rel="noopener noreferrer">Hill-climbing ARC-AGI-3</a></h3>
-          <p class="authors">blog.alexisfox.dev</p>
-          <div class="actions"><a class="ib primary" href="https://blog.alexisfox.dev/arcagi3" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span>Read post</span></a></div>
-        </div>
+        <h3><a href="https://blog.alexisfox.dev/arcagi3" target="_blank" rel="noopener noreferrer" title="Hill-climbing ARC-AGI-3">Hill-climbing ARC-AGI-3</a></h3><span class="host">blog.alexisfox.dev</span><span class="pp"></span>
       </li>
       <li class="pub post" data-year="2026">
-        <div class="pub-body">
-          <h3><a href="https://www.together.ai/blog/dsgym" target="_blank" rel="noopener noreferrer">DSGym: A holistic framework for evaluating and training data science agents</a></h3>
-          <p class="authors">together.ai</p>
-          <div class="actions"><a class="ib primary" href="https://www.together.ai/blog/dsgym" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span>Read post</span></a><a class="ib" href="https://arxiv.org/abs/2601.16344" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg><span>Paper</span></a></div>
-        </div>
+        <h3><a href="https://www.together.ai/blog/dsgym" target="_blank" rel="noopener noreferrer" title="DSGym: A holistic framework for evaluating and training data science agents">DSGym: A holistic framework for evaluating and training data science agents</a></h3><span class="host">together.ai</span><span class="pp"><a href="https://arxiv.org/abs/2601.16344" target="_blank" rel="noopener noreferrer">paper</a></span>
       </li>
       <li class="pub post year-start" data-year="2025">
-        <div class="pub-body">
-          <h3><a href="https://www.together.ai/blog/moaa" target="_blank" rel="noopener noreferrer">Mixture-of-Agents Alignment: Harnessing the Collective Intelligence of Open-Source LLMs to Improve Post-Training</a></h3>
-          <p class="authors">together.ai</p>
-          <div class="actions"><a class="ib primary" href="https://www.together.ai/blog/moaa" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span>Read post</span></a><a class="ib" href="https://arxiv.org/abs/2505.03059" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg><span>Paper</span></a></div>
-        </div>
+        <h3><a href="https://www.together.ai/blog/moaa" target="_blank" rel="noopener noreferrer" title="Mixture-of-Agents Alignment: Harnessing the Collective Intelligence of Open-Source LLMs to Improve Post-Training">Mixture-of-Agents Alignment: Harnessing the Collective Intelligence of Open-Source LLMs to Improve Post-Training</a></h3><span class="host">together.ai</span><span class="pp"><a href="https://arxiv.org/abs/2505.03059" target="_blank" rel="noopener noreferrer">paper</a></span>
       </li>
       <li class="pub post year-start" data-year="2024">
-        <div class="pub-body">
-          <h3><a href="https://www.together.ai/blog/together-moa" target="_blank" rel="noopener noreferrer">Together MoA — collective intelligence of open-source models pushing the frontier of LLM capabilities</a></h3>
-          <p class="authors">together.ai</p>
-          <div class="actions"><a class="ib primary" href="https://www.together.ai/blog/together-moa" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span>Read post</span></a><a class="ib" href="https://arxiv.org/abs/2406.04692" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg><span>Paper</span></a></div>
-        </div>
+        <h3><a href="https://www.together.ai/blog/together-moa" target="_blank" rel="noopener noreferrer" title="Together MoA — collective intelligence of open-source models pushing the frontier of LLM capabilities">Together MoA — collective intelligence of open-source models pushing the frontier of LLM capabilities</a></h3><span class="host">together.ai</span><span class="pp"><a href="https://arxiv.org/abs/2406.04692" target="_blank" rel="noopener noreferrer">paper</a></span>
       </li>
       <li class="pub post year-start" data-year="2020">
-        <div class="pub-body">
-          <h3><a href="https://ucinlp.github.io/facade/" target="_blank" rel="noopener noreferrer">Gradient-based Analysis of NLP Models is Manipulable</a></h3>
-          <p class="authors">ucinlp.github.io</p>
-          <div class="actions"><a class="ib primary" href="https://ucinlp.github.io/facade/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span>Read post</span></a><a class="ib" href="https://arxiv.org/pdf/2010.05419.pdf" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg><span>Paper</span></a></div>
-        </div>
+        <h3><a href="https://ucinlp.github.io/facade/" target="_blank" rel="noopener noreferrer" title="Gradient-based Analysis of NLP Models is Manipulable">Gradient-based Analysis of NLP Models is Manipulable</a></h3><span class="host">ucinlp.github.io</span><span class="pp"><a href="https://arxiv.org/pdf/2010.05419.pdf" target="_blank" rel="noopener noreferrer">paper</a></span>
       </li>
       <li class="pub post year-start" data-year="2019">
-        <div class="pub-body">
-          <h3><a href="https://allennlp.org/interpret" target="_blank" rel="noopener noreferrer">AllenNLP Interpret</a></h3>
-          <p class="authors">allennlp.org</p>
-          <div class="actions"><a class="ib primary" href="https://allennlp.org/interpret" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span>Read post</span></a><a class="ib" href="https://arxiv.org/abs/1909.09251" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" class="st"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg><span>Paper</span></a></div>
-        </div>
+        <h3><a href="https://allennlp.org/interpret" target="_blank" rel="noopener noreferrer" title="AllenNLP Interpret">AllenNLP Interpret</a></h3><span class="host">allennlp.org</span><span class="pp"><a href="https://arxiv.org/abs/1909.09251" target="_blank" rel="noopener noreferrer">paper</a></span>
       </li>
       </ul>
     </section>

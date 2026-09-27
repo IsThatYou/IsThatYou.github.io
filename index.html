@@ -44,8 +44,12 @@
   .top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 8px 24px; padding-block: 56px 32px; }
   .kicker, .figure, .mark, .colophon { display: none; }
   section.block.first { border-top: 0; margin-top: 0; padding-top: 0; }
-  .pub.post { grid-template-columns: minmax(0, 1fr); }
-  .pub.post .authors { margin-bottom: 10px; }
+  .pubs.posts { gap: 14px; }
+  .pub.post { grid-template-columns: minmax(0, 1fr) 150px 44px; column-gap: 18px; align-items: baseline; }
+  .pub.post h3 { margin: 0; font-size: 19px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pub.post .host { font-size: 13.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pub.post .pp { font-size: 13.5px; text-align: right; }
+  @media (max-width: 560px) { .pub.post { grid-template-columns: minmax(0, 1fr) auto; } .pub.post .host { display: none; } }
   .intro { margin: -8px 0 30px; max-width: 62ch; color: var(--muted); }
   .top nav a[aria-current="page"] { color: var(--ink); text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; }
   .top h1 { margin: 0; color: var(--ink); font-size: clamp(40px, 6vw, 56px); line-height: 1; font-weight: 700; letter-spacing: -.035em; }
