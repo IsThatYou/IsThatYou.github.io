@@ -195,7 +195,27 @@ body .mark { display: block; width: 18px; height: 18px; fill: none; stroke: var(
 @media (prefers-reduced-motion: reduce) {
   body .figure * { animation: none; stroke-dashoffset: 0; }
   body .figure .tk { animation: none; opacity: 1; }
-}</style>
+}
+body .pubs.posts { gap: 16px; }
+body .pubs[data-cat="all"] .pub.post.year-start::before { content: none; }
+body .pub.post { grid-template-columns: 84px minmax(0, max-content) minmax(28px, 1fr) 150px 46px; column-gap: 12px; }
+body .pub.post .date { display: block; font-family: "EB Garamond", Garamond, Georgia, serif; font-variant-caps: all-small-caps; font-variant-numeric: oldstyle-nums; letter-spacing: .07em; font-size: 16px; color: var(--muted); white-space: nowrap; }
+body .pub.post h3 { font-size: 20.5px; }
+body .pub.post .leader { display: block; align-self: end; margin-bottom: .42em; border-bottom: 1.5px dotted color-mix(in srgb, var(--muted) 55%, transparent); }
+body .pub.post .host, body .pub.post .pp { font-family: "EB Garamond", Garamond, Georgia, serif; font-variant-caps: all-small-caps; font-variant-numeric: oldstyle-nums; letter-spacing: .07em; font-size: 15.5px; }
+body .pub.post .pp { text-align: left; }
+body .pub.post:hover .leader { border-bottom-color: var(--chalk); }
+body #blog > h2 { text-align: center; font-size: 40px; margin-bottom: 6px; }
+body #blog > h2::after { content: ""; display: block; width: 44px; height: 1px; margin: 16px auto 0; background: var(--chalk); }
+body #blog > .intro { text-align: center; margin: 22px auto 44px; max-width: 46ch; color: var(--text); }
+body .intro .q { display: block; font: italic 22px/1.35 "EB Garamond", Garamond, Georgia, serif; color: var(--ink); }
+body .intro .qa { display: block; margin-top: 6px; font-family: "EB Garamond", Garamond, Georgia, serif; font-variant-caps: all-small-caps; font-variant-numeric: oldstyle-nums; letter-spacing: .07em; font-size: 15px; color: var(--muted); }
+@media (max-width: 560px) {
+  body .pub.post { grid-template-columns: 62px minmax(0, 1fr); column-gap: 10px; }
+  body .pub.post .host, body .pub.post .pp, body .pub.post .leader { display: none; }
+  body .pub.post .date { font-size: 14.5px; }
+}
+</style>
 
 <div class="page">
   <header class="top">
@@ -210,7 +230,7 @@ body .mark { display: block; width: 18px; height: 18px; fill: none; stroke: var(
   <main>
     <section class="block first" id="blog">
       <h2>Blog</h2>
-      <p class="intro">Blog posts, newest first.</p>
+      <p class="intro"><span class="q">Festina lente.</span><span class="qa">Make haste slowly · motto of the Aldine Press, Venice</span></p>
       <svg class="spiral" viewBox="-2 -2 165.8 104" aria-hidden="true"><path class="sq" pathLength="1" d="M0 0H161.8V100H0Z"/><path class="sq" pathLength="1" d="M100 0V100M100 61.8H161.8M123.6 61.8V100M100 76.4H123.6M114.6 61.8V76.4M114.6 70.8H123.6"/><path class="sp" pathLength="1" d="M0 100A100 100 0 0 1 100 0A61.8 61.8 0 0 1 161.8 61.8A38.2 38.2 0 0 1 123.6 100A23.6 23.6 0 0 1 100 76.4A14.6 14.6 0 0 1 114.6 61.8A9 9 0 0 1 123.6 70.8"/></svg>
       <ul class="pubs posts" data-cat="all">
       <li class="pub post year-start" data-year="2026">
