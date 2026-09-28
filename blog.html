@@ -45,6 +45,7 @@
   .kicker, .figure, .mark, .colophon { display: none; }
   section.block.first { border-top: 0; margin-top: 0; padding-top: 0; }
   .pubs.posts { gap: 14px; }
+  .post .date, .post .yr, .post .glyph, .post .leader, .spiral { display: none; }
   .pub.post { grid-template-columns: minmax(0, 1fr) 150px 44px; column-gap: 18px; align-items: baseline; }
   .pub.post h3 { margin: 0; font-size: 19px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .pub.post .host { font-size: 13.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -210,27 +211,35 @@ body .mark { display: block; width: 18px; height: 18px; fill: none; stroke: var(
     <section class="block first" id="blog">
       <h2>Blog</h2>
       <p class="intro">Blog posts, newest first.</p>
+      <svg class="spiral" viewBox="-2 -2 165.8 104" aria-hidden="true"><path class="sq" pathLength="1" d="M0 0H161.8V100H0Z"/><path class="sq" pathLength="1" d="M100 0V100M100 61.8H161.8M123.6 61.8V100M100 76.4H123.6M114.6 61.8V76.4M114.6 70.8H123.6"/><path class="sp" pathLength="1" d="M0 100A100 100 0 0 1 100 0A61.8 61.8 0 0 1 161.8 61.8A38.2 38.2 0 0 1 123.6 100A23.6 23.6 0 0 1 100 76.4A14.6 14.6 0 0 1 114.6 61.8A9 9 0 0 1 123.6 70.8"/></svg>
       <ul class="pubs posts" data-cat="all">
       <li class="pub post year-start" data-year="2026">
-        <h3><a href="https://modal.com/blog/kimi-k3-by-moonshot-now-available-on-modal" target="_blank" rel="noopener noreferrer" title="Kimi K3 by Moonshot now available on Modal">Kimi K3 by Moonshot now available on Modal</a></h3><span class="host">modal.com</span><span class="pp"></span>
+        <svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><rect x="4" y="4" width="32" height="32"/><circle cx="20" cy="20" r="16"/><path d="M4 4L36 36M36 4L4 36"/></svg><time class="date">Jul 2026</time>
+        <h3><a href="https://modal.com/blog/kimi-k3-by-moonshot-now-available-on-modal" target="_blank" rel="noopener noreferrer" title="Kimi K3 by Moonshot now available on Modal">Kimi K3 by Moonshot now available on Modal</a></h3><span class="leader"></span><span class="host">modal.com</span><span class="pp"></span><span class="yr">2026</span>
       </li>
       <li class="pub post" data-year="2026">
-        <h3><a href="https://blog.alexisfox.dev/arcagi3" target="_blank" rel="noopener noreferrer" title="Hill-climbing ARC-AGI-3">Hill-climbing ARC-AGI-3</a></h3><span class="host">blog.alexisfox.dev</span><span class="pp"></span>
+        <svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="16"/><path d="M20 4L34 28H6Z"/></svg><time class="date">Mar 2026</time>
+        <h3><a href="https://blog.alexisfox.dev/arcagi3" target="_blank" rel="noopener noreferrer" title="Hill-climbing ARC-AGI-3">Hill-climbing ARC-AGI-3</a></h3><span class="leader"></span><span class="host">blog.alexisfox.dev</span><span class="pp"></span><span class="yr">2026</span>
       </li>
       <li class="pub post" data-year="2026">
-        <h3><a href="https://www.together.ai/blog/dsgym" target="_blank" rel="noopener noreferrer" title="DSGym: A holistic framework for evaluating and training data science agents">DSGym: A holistic framework for evaluating and training data science agents</a></h3><span class="host">together.ai</span><span class="pp"><a href="https://arxiv.org/abs/2601.16344" target="_blank" rel="noopener noreferrer">paper</a></span>
+        <svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><rect x="8" y="8" width="24" height="24" transform="rotate(45 20 20)"/><circle cx="20" cy="20" r="11.3"/></svg><time class="date">Jan 2026</time>
+        <h3><a href="https://www.together.ai/blog/dsgym" target="_blank" rel="noopener noreferrer" title="DSGym: A holistic framework for evaluating and training data science agents">DSGym: A holistic framework for evaluating and training data science agents</a></h3><span class="leader"></span><span class="host">together.ai</span><span class="pp"><a href="https://arxiv.org/abs/2601.16344" target="_blank" rel="noopener noreferrer">paper</a></span><span class="yr">2026</span>
       </li>
       <li class="pub post year-start" data-year="2025">
-        <h3><a href="https://www.together.ai/blog/moaa" target="_blank" rel="noopener noreferrer" title="Mixture-of-Agents Alignment: Harnessing the Collective Intelligence of Open-Source LLMs to Improve Post-Training">Mixture-of-Agents Alignment: Harnessing the Collective Intelligence of Open-Source LLMs to Improve Post-Training</a></h3><span class="host">together.ai</span><span class="pp"><a href="https://arxiv.org/abs/2505.03059" target="_blank" rel="noopener noreferrer">paper</a></span>
+        <svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><rect x="4" y="10" width="32" height="20"/><path d="M24 10V30"/><path d="M4 30A20 20 0 0 1 24 10"/></svg><time class="date">May 2025</time>
+        <h3><a href="https://www.together.ai/blog/moaa" target="_blank" rel="noopener noreferrer" title="Mixture-of-Agents Alignment: Harnessing the Collective Intelligence of Open-Source LLMs to Improve Post-Training">Mixture-of-Agents Alignment: Harnessing the Collective Intelligence of Open-Source LLMs to Improve Post-Training</a></h3><span class="leader"></span><span class="host">together.ai</span><span class="pp"><a href="https://arxiv.org/abs/2505.03059" target="_blank" rel="noopener noreferrer">paper</a></span><span class="yr">2025</span>
       </li>
       <li class="pub post year-start" data-year="2024">
-        <h3><a href="https://www.together.ai/blog/together-moa" target="_blank" rel="noopener noreferrer" title="Together MoA — collective intelligence of open-source models pushing the frontier of LLM capabilities">Together MoA — collective intelligence of open-source models pushing the frontier of LLM capabilities</a></h3><span class="host">together.ai</span><span class="pp"><a href="https://arxiv.org/abs/2406.04692" target="_blank" rel="noopener noreferrer">paper</a></span>
+        <svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><circle cx="14" cy="20" r="10"/><circle cx="26" cy="20" r="10"/><path d="M20 4V36"/></svg><time class="date">Jun 2024</time>
+        <h3><a href="https://www.together.ai/blog/together-moa" target="_blank" rel="noopener noreferrer" title="Together MoA — collective intelligence of open-source models pushing the frontier of LLM capabilities">Together MoA — collective intelligence of open-source models pushing the frontier of LLM capabilities</a></h3><span class="leader"></span><span class="host">together.ai</span><span class="pp"><a href="https://arxiv.org/abs/2406.04692" target="_blank" rel="noopener noreferrer">paper</a></span><span class="yr">2024</span>
       </li>
       <li class="pub post year-start" data-year="2020">
-        <h3><a href="https://ucinlp.github.io/facade/" target="_blank" rel="noopener noreferrer" title="Gradient-based Analysis of NLP Models is Manipulable">Gradient-based Analysis of NLP Models is Manipulable</a></h3><span class="host">ucinlp.github.io</span><span class="pp"><a href="https://arxiv.org/pdf/2010.05419.pdf" target="_blank" rel="noopener noreferrer">paper</a></span>
+        <svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><rect x="4" y="4" width="32" height="32"/><path d="M4 36L20 4L36 36"/><path d="M4 20H36"/></svg><time class="date">Oct 2020</time>
+        <h3><a href="https://ucinlp.github.io/facade/" target="_blank" rel="noopener noreferrer" title="Gradient-based Analysis of NLP Models is Manipulable">Gradient-based Analysis of NLP Models is Manipulable</a></h3><span class="leader"></span><span class="host">ucinlp.github.io</span><span class="pp"><a href="https://arxiv.org/pdf/2010.05419.pdf" target="_blank" rel="noopener noreferrer">paper</a></span><span class="yr">2020</span>
       </li>
       <li class="pub post year-start" data-year="2019">
-        <h3><a href="https://allennlp.org/interpret" target="_blank" rel="noopener noreferrer" title="AllenNLP Interpret">AllenNLP Interpret</a></h3><span class="host">allennlp.org</span><span class="pp"><a href="https://arxiv.org/abs/1909.09251" target="_blank" rel="noopener noreferrer">paper</a></span>
+        <svg class="glyph" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="16"/><circle cx="20" cy="20" r="8"/><path d="M4 20H36M20 4V36"/></svg><time class="date">Sep 2019</time>
+        <h3><a href="https://allennlp.org/interpret" target="_blank" rel="noopener noreferrer" title="AllenNLP Interpret">AllenNLP Interpret</a></h3><span class="leader"></span><span class="host">allennlp.org</span><span class="pp"><a href="https://arxiv.org/abs/1909.09251" target="_blank" rel="noopener noreferrer">paper</a></span><span class="yr">2019</span>
       </li>
       </ul>
     </section>
