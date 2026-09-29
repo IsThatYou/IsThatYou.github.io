@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="200" viewBox="0 0 320 200">
+  <rect width="320" height="200" fill="#FBFAF7"/>
+  <g fill="none" stroke="#A9573C" stroke-opacity=".32" stroke-width="1">
+    <rect x="95" y="35" width="130" height="130"/><circle cx="160" cy="100" r="76"/>
+    <path d="M95 35L225 165M225 35L95 165M160 10V190M40 100H280"/>
+  </g>
+  <text x="160" y="108" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="25" fill="#15171A">GAP-Gen</text>
+</svg>
