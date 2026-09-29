@@ -45,6 +45,7 @@
   .kicker, .figure, .mark, .colophon { display: none; }
   section.block.first { border-top: 0; margin-top: 0; padding-top: 0; }
   .pubs.posts { gap: 14px; }
+  .eq { margin: -18px 0 22px; font-size: 13px; color: var(--muted); }
   .post .date, .post .yr, .post .glyph, .post .leader, .spiral { display: none; }
   .pub.post { grid-template-columns: minmax(0, 1fr) 150px 44px; column-gap: 18px; align-items: baseline; }
   .pub.post h3 { margin: 0; font-size: 19px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -173,14 +174,25 @@ body .award::before { content: "· "; }
 body .pubs[data-cat="all"] .pub.year-start::before { content: attr(data-year); font: 500 17px "EB Garamond", Garamond, Georgia, serif; font-variant-numeric: oldstyle-nums; color: var(--muted); letter-spacing: .03em; }
 body .ib, body .thumb { border-radius: 3px; }
 
+
+body .pub .venue { display: inline; margin: 0 18px 0 0; }
+body .pub .award { margin-left: 8px; }
+body .pub .actions { display: inline-flex; gap: 2px 16px; vertical-align: baseline; }
+body .pub .ib { border: 0; background: none; padding: 0; height: auto; gap: 5px; color: var(--muted); font: 500 15px "EB Garamond", Garamond, Georgia, serif; font-variant-caps: all-small-caps; letter-spacing: .06em; }
+body .pub .ib svg { width: 12px; height: 12px; opacity: .8; }
+body .pub .ib.primary { background: none; color: var(--accent); }
+body .pub .ib:hover, body .pub .ib[aria-expanded="true"] { border: 0; color: var(--accent); text-decoration: underline; text-underline-offset: 4px; }
+body .pub .authors { margin-bottom: 6px; }
+body .pub h3 { margin-bottom: 5px; }
+body .pubs { gap: 30px; }
 body footer { display: flex; align-items: center; gap: 10px; }
 body .mark { display: block; width: 18px; height: 18px; fill: none; stroke: var(--chalk); stroke-width: 1.4; }
 
 @media (min-width: 1180px) {
-  body .pubs[data-cat="all"] .pub.year-start::before { position: absolute; right: 100%; top: 0; margin-right: 26px; }
+  body .pubs[data-cat="all"] .pub.year-start::before { position: absolute; left: 100%; top: 0; margin-left: 26px; }
 }
 @media (max-width: 1179px) {
-  body .pubs[data-cat="all"] .pub.year-start::before { grid-column: 1 / -1; padding-bottom: 4px; margin-bottom: -8px; border-bottom: 1px solid var(--line); }
+  body .pubs[data-cat="all"] .pub.year-start::before { grid-column: 1 / -1; text-align: right; padding-bottom: 4px; margin-bottom: -8px; border-bottom: 1px solid var(--line); }
 }
 @media (max-width: 820px) {
   body .about { grid-template-columns: 1fr; gap: 28px; }
