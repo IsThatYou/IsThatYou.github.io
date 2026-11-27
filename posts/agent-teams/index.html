@@ -1011,7 +1011,7 @@ body {
   <header class="mast">
         <h1>The Amazing Effectiveness of Agent Teams</h1>
     <p class="dek">Agent teams are a new way to scale intelligence. In this blog we are going to show you how ten teams of ten agents beat the best of 100 lone agents by 27% on average over 12 hard tasks.</p>
-    <figure class="demo masthead" id="masthead" data-demo="masthead" role="img" aria-label="Animation. One hundred agents that work alone gather into ten teams of ten. In each team, agents post findings to a shared forum and read each other's posts. At the end the best team is marked.">
+    <figure class="demo masthead" id="masthead" data-demo="masthead" role="img" aria-label="Animation, a hand-drawn garden. Ten robots stand alone, each with a small plant in a pot. Ten more robots share one notice board. Each note they pin on the board makes their one tree grow, until it stands far above the pots and blooms.">
       <div class="demo-mount"></div>
     </figure>
     <dl class="meta meta-wide">
@@ -2118,240 +2118,571 @@ body {
   update();
 })();
 </script>
+<script data-from="post1/demos/sketch.js">
+/* sketch.js: a small drawing kit for hand-drawn SVG (window.SK). Used by demos/masthead.js, the animation under
+ * the title of post 1. Load it before masthead.js.
+ *
+ * Everything is drawn as SVG paths whose points get a small random offset, so the lines look drawn by hand.
+ * Each sprite is drawn three times with a different offset (child groups sk-b0..2); showing them in turn makes the
+ * lines "boil" a little, like a hand-drawn film. Line kinds per sprite, each one <path> with its own class:
+ * sk-mask (paper fill, hides what is behind), sk-wash (pale fill), sk-tint (second pale fill, off unless the page
+ * styles it), sk-fine (thin lines), sk-bold (outlines), sk-ink (filled dots). The page that uses the kit styles
+ * these classes (masthead.js does it for #masthead).
+ */
+(function () {
+  "use strict";
+  var NS = "http://www.w3.org/2000/svg", RAD = Math.PI / 180, TAU = Math.PI * 2;
+  function el(tag, at, parent) { var e = document.createElementNS(NS, tag); for (var k in at) e.setAttribute(k, at[k]); if (parent) parent.appendChild(e); return e; }
+  function rng(seed) {
+    var s = (Math.imul((seed | 0) + 17, 2654435761) >>> 0) || 88675123;
+    var fn = function () { s ^= s << 13; s >>>= 0; s ^= s >>> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; };
+    fn(); fn(); fn(); return fn;
+  }
+  function clamp(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
+  function ease(x) { x = clamp(x); return x * x * (3 - 2 * x); }
+  function f(n) { return Math.round(n * 10) / 10; }
+
+  function Pen(seed, amp) {
+    var r = rng(seed), A = amp == null ? 0.55 : amp, cur = "bold";
+    var out = { mask: "", wash: "", tint: "", fine: "", bold: "", ink: "" };
+    var tf = { x: 0, y: 0, c: 1, s: 0, k: 1, m: 1, rot: 0 };
+    function j(a) { return (r() * 2 - 1) * a * A; }
+    function T(x, y) { x *= tf.m * tf.k; y *= tf.k; return f(tf.x + x * tf.c - y * tf.s) + " " + f(tf.y + x * tf.s + y * tf.c); }
+    var P = { out: out, j: j, r: r };
+    P.w = function (n) { cur = n; return P; };
+    // move the pen's origin (and turn, scale or mirror it) for the next strokes; home() goes back
+    P.at = function (x, y, rot, k, mirror) { rot = rot || 0; tf = { x: x, y: y, c: Math.cos(rot * RAD), s: Math.sin(rot * RAD), k: k || 1, m: mirror ? -1 : 1, rot: rot }; return P; };
+    P.home = function () { return P.at(0, 0); };
+    P.pt = function (x, y) { x *= tf.m * tf.k; y *= tf.k; return [tf.x + x * tf.c - y * tf.s, tf.y + x * tf.s + y * tf.c]; };
+    P.line = function (x1, y1, x2, y2, over) {
+      var len = Math.hypot(x2 - x1, y2 - y1) || 1, ux = (x2 - x1) / len, uy = (y2 - y1) / len;
+      var o = over == null ? Math.min(1.1, len * 0.07) : over;
+      var ax = x1 - ux * o * r() + j(0.5), ay = y1 - uy * o * r() + j(0.5), bx = x2 + ux * o * r() + j(0.5), by = y2 + uy * o * r() + j(0.5);
+      var bow = j(0.3 + len * 0.025);
+      out[cur] += "M" + T(ax, ay) + "Q" + T((ax + bx) / 2 - uy * bow, (ay + by) / 2 + ux * bow) + " " + T(bx, by);
+      return P;
+    };
+    P.quad = function (x1, y1, cx, cy, x2, y2, jit) {
+      var a = jit == null ? 0.6 : jit;
+      out[cur] += "M" + T(x1 + j(a), y1 + j(a)) + "Q" + T(cx + j(a * 1.3), cy + j(a * 1.3)) + " " + T(x2 + j(a), y2 + j(a)); return P;
+    };
+    P.poly = function (pts, closed, over) {
+      for (var i = 0; i + 1 < pts.length; i++) P.line(pts[i][0], pts[i][1], pts[i + 1][0], pts[i + 1][1], over);
+      if (closed) P.line(pts[pts.length - 1][0], pts[pts.length - 1][1], pts[0][0], pts[0][1], over);
+      return P;
+    };
+    P.curve = function (pts, closed, jit) {
+      var a = jit == null ? 0.5 : jit, q = pts.map(function (p) { return [p[0] + j(a), p[1] + j(a)]; });
+      if (closed) q.push([q[0][0] + j(a * 2.5), q[0][1] + j(a * 2.5)]);
+      var n = q.length, s = "M" + T(q[0][0], q[0][1]);
+      for (var i = 0; i < n - 1; i++) {
+        var p0 = q[i ? i - 1 : (closed ? n - 2 : 0)], p1 = q[i], p2 = q[i + 1], p3 = q[i + 2 < n ? i + 2 : (closed ? 1 : n - 1)];
+        s += "C" + T(p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6) + " " + T(p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6) + " " + T(p2[0], p2[1]);
+      }
+      out[cur] += s; return P;
+    };
+    P.oval = function (cx, cy, rx, ry, n) {
+      n = n || 8; var a0 = r() * TAU, pts = [];
+      for (var i = 0; i < n; i++) pts.push([cx + Math.cos(a0 + i * TAU / n) * rx, cy + Math.sin(a0 + i * TAU / n) * ry]);
+      return P.curve(pts, true, Math.min(0.5, Math.min(rx, ry) * 0.16));
+    };
+    P.box = function (x, y, w, h, rad) {
+      var c = Math.min(rad || 0, w / 2, h / 2), k = c * 0.3;
+      if (c < 0.6) return P.poly([[x, y], [x + w, y], [x + w, y + h], [x, y + h]], true);
+      return P.curve([[x + w * 0.45, y], [x + w - c, y], [x + w - k, y + k], [x + w, y + c], [x + w, y + h - c], [x + w - k, y + h - k], [x + w - c, y + h],
+        [x + c, y + h], [x + k, y + h - k], [x, y + h - c], [x, y + c], [x + k, y + k], [x + c, y]], true, Math.min(0.4, c * 0.2));
+    };
+    function ell(cx, cy, rx, ry) {
+      return "M" + T(cx - rx, cy) + "A" + f(rx * tf.k) + " " + f(ry * tf.k) + " " + f(tf.rot) + " 1 0 " + T(cx + rx, cy) + "A" + f(rx * tf.k) + " " + f(ry * tf.k) + " " + f(tf.rot) + " 1 0 " + T(cx - rx, cy) + "Z";
+    }
+    P.dot = function (x, y, rad) { rad = Math.max(rad, 0.55 / tf.k); out.ink += ell(x + j(0.25), y + j(0.25), rad, rad); return P; };
+    P.fillPoly = function (pts, key) {
+      var s = ""; pts.forEach(function (p, i) { s += (i ? "L" : "M") + T(p[0], p[1]); }); out[key || "mask"] += s + "Z"; return P;
+    };
+    P.fillBox = function (x, y, w, h, key) { return P.fillPoly([[x, y], [x + w, y], [x + w, y + h], [x, y + h]], key); };
+    P.fillOval = function (cx, cy, rx, ry, key) { out[key || "mask"] += ell(cx, cy, rx, ry); return P; };
+    P.hatch = function (x, y, w, h, gap) {            // thin slanted lines inside a box (shade)
+      var keep = cur; cur = "fine";
+      for (var c = gap * (0.4 + r() * 0.4); c < w + h; c += gap * (0.8 + 0.4 * r()))
+        P.line(x + Math.min(c, w), y + Math.max(0, c - w), x + Math.max(0, c - h), y + Math.min(c, h), 0);
+      cur = keep; return P;
+    };
+    return P;
+  }
+
+  // One sprite: a <g> with three drawings of the same thing. draw(P, S): P is the pen, S a random source that is
+  // the same in all three drawings (use S for "what to draw", the pen's own offsets for "how the line wobbles").
+  function sprite(parent, seed, draw, amp) {
+    var g = el("g", {}, parent);
+    for (var b = 0; b < 3; b++) {
+      var P = Pen(seed * 7 + b * 131 + 1, amp); draw(P, rng(seed + 1000));
+      var gb = el("g", { "class": "sk-b" + b }, g);
+      ["mask", "wash", "tint", "fine", "bold", "ink"].forEach(function (k) { if (P.out[k]) el("path", { d: P.out[k], "class": "sk-" + k }, gb); });
+    }
+    return g;
+  }
+  function place(g, x, y, s, rot) { g.setAttribute("transform", "translate(" + f(x) + " " + f(y) + ")" + (rot ? " rotate(" + f(rot) + ")" : "") + (s != null && s !== 1 ? " scale(" + (Math.round(s * 1000) / 1000) + ")" : "")); }
+  function show(g, on) { g.style.display = on ? "" : "none"; }
+  function fade(g, a) { if (a <= 0.004) g.style.display = "none"; else { g.style.display = ""; g.style.opacity = a >= 0.996 ? "" : a.toFixed(3); } }
+  // lines that draw themselves: p 0..1, D = the longest stroke in px
+  function drawOn(g, p, D) {
+    if (p >= 1) { g.style.strokeDasharray = ""; g.style.strokeDashoffset = ""; return; }
+    g.style.strokeDasharray = D + " " + D; g.style.strokeDashoffset = f(D * (1 - clamp(p)));
+  }
+
+  // ---------------------------------------------------------------- robots
+  // Origin: between the feet, on the ground. o.h height in px (without antenna). o.face -1 | 0 | 1. o.head 0 box, 1 dome,
+  // 2 tall. o.eyes 0 dots, 1 visor, 2 one lens. o.legs 0 legs, 1 wheel, 2 tracks. o.ant 0 ball, 1 two, 2 bent, 3 none.
+  // o.hat straw hat. o.aL / o.aR arm angles in degrees from straight down (positive = forward and up).
+  function robot(P, o) {
+    o = o || {};
+    var h = o.h || 20, u = h / 20, big = h >= 38, d = o.face == null ? 1 : o.face, i;
+    var legH = 4 * u, bw = 9.5 * u, bh = 7.6 * u, nk = (big ? 1.5 : 1.0) * u;
+    var hw = (o.head === 2 ? 9.6 : 12.2) * u, hh = (o.head === 2 ? 8.6 : 7.4) * u;
+    var by = -legH - bh, hy = by - nk - hh, hx = -hw / 2 + d * 0.8 * u, hcx = hx + hw / 2;
+    if (!o.noShadow) { P.w("fine"); for (i = 0; i < 3; i++) P.line(-bw * 0.7 + i * 1.6 * u, (0.7 + i * 0.9) * u, bw * 1.0 - i * 0.5 * u, (0.7 + i * 0.9) * u, 0); }
+    P.w("bold");
+    if (o.legs === 1) {
+      P.fillOval(0, -2.3 * u, 2.3 * u, 2.3 * u); P.oval(0, -2.3 * u, 2.3 * u, 2.3 * u, 7); P.dot(0, -2.3 * u, 0.5 * u);
+      P.line(-1.7 * u, by + bh, -0.3 * u, -2.7 * u, 0).line(1.7 * u, by + bh, 0.3 * u, -2.7 * u, 0);
+    } else if (o.legs === 2) {
+      P.fillBox(-bw * 0.6, -3 * u, bw * 1.2, 3 * u); P.box(-bw * 0.62, -3.2 * u, bw * 1.24, 3.2 * u, 1.5 * u);
+      P.w("fine"); for (i = -1; i <= 1; i++) P.oval(i * bw * 0.36, -1.6 * u, 0.8 * u, 0.8 * u, 5);
+      P.w("bold").line(0, by + bh, 0, -3.2 * u, 0);
+    } else {
+      for (i = -1; i <= 1; i += 2) {
+        var lx = i * 2.3 * u;
+        P.line(lx, by + bh, lx + i * 0.2 * u, -0.4 * u, 0);
+        P.line(lx - 1.0 * u + d * 0.6 * u, -0.1 * u, lx + 1.2 * u + d * 0.9 * u, -0.1 * u, 0);
+        if (big) { P.fillOval(lx + i * 0.1 * u, by + bh + legH * 0.45, 0.6 * u, 0.6 * u); P.oval(lx + i * 0.1 * u, by + bh + legH * 0.45, 0.6 * u, 0.6 * u, 5); }
+      }
+    }
+    // body
+    P.fillBox(-bw / 2, by, bw, bh); P.fillBox(-bw / 2 + 0.5 * u, by + 0.5 * u, bw, bh, "wash"); P.w("bold").box(-bw / 2, by, bw, bh, 1.4 * u);
+    P.hatch(bw * 0.1, by + 1.0 * u, bw * 0.32, bh - 2.1 * u, (big ? 1.15 : 1.7) * u);
+    P.w("fine");
+    if (big) {
+      P.box(-bw * 0.36, by + 1.4 * u, bw * 0.4, bh * 0.4, 0.5 * u); P.oval(-bw * 0.16, by + 1.4 * u + bh * 0.2, 0.7 * u, 0.7 * u, 6);
+      P.dot(-bw * 0.3, by + bh - 1.7 * u, 0.28 * u).dot(-bw * 0.13, by + bh - 1.7 * u, 0.28 * u);
+      P.line(-0.9 * u, by, -0.9 * u, by - nk, 0).line(0.9 * u, by, 0.9 * u, by - nk, 0);
+    } else P.dot(-bw * 0.2, by + bh * 0.46, 0.45 * u);
+    // head
+    var top = hy;
+    P.w("bold");
+    if (o.head === 1) {
+      top = hy - hh * 0.1;
+      P.fillPoly([[hx, hy + hh], [hx, hy + hh * 0.45], [hx + hw * 0.16, hy + hh * 0.1], [hcx, top], [hx + hw * 0.84, hy + hh * 0.1], [hx + hw, hy + hh * 0.45], [hx + hw, hy + hh]]);
+      P.curve([[hx, hy + hh], [hx, hy + hh * 0.45], [hx + hw * 0.2, hy + hh * 0.05], [hcx, top], [hx + hw * 0.8, hy + hh * 0.05], [hx + hw, hy + hh * 0.45], [hx + hw, hy + hh]], false, 0.3);
+      P.line(hx, hy + hh, hx + hw, hy + hh);
+    } else { P.fillBox(hx, hy, hw, hh); P.box(hx, hy, hw, hh, (o.head === 2 ? 1.6 : 2.3) * u); }
+    var ex = hcx + d * 1.3 * u, ey = hy + hh * 0.5, es = (o.head === 2 ? 2.0 : 2.5) * u;
+    if (o.eyes === 2) { P.w("bold").oval(ex, ey, 2 * u, 2 * u, 7); P.dot(ex + d * 0.5 * u, ey, 0.7 * u); }
+    else {
+      if (o.eyes === 1) P.w("fine").box(ex - es - 1.5 * u, ey - 1.5 * u, es * 2 + 3 * u, 3 * u, 1.4 * u);
+      if (big && o.eyes !== 1) {
+        P.w("fine").oval(ex - es, ey, 1.25 * u, 1.25 * u, 6).oval(ex + es, ey, 1.25 * u, 1.25 * u, 6);
+        P.dot(ex - es + d * 0.3 * u, ey, 0.5 * u).dot(ex + es + d * 0.3 * u, ey, 0.5 * u);
+      } else P.dot(ex - es, ey, 0.62 * u).dot(ex + es, ey, 0.62 * u);
+    }
+    if (big) {
+      P.w("fine").line(ex - 1.2 * u, hy + hh * 0.82, ex + 1.2 * u, hy + hh * 0.82, 0);
+      P.w("bold").box(hx - 1.1 * u, ey - 1.2 * u, 1.1 * u, 2.4 * u, 0.3 * u).box(hx + hw, ey - 1.2 * u, 1.1 * u, 2.4 * u, 0.3 * u);
+    }
+    if (o.hat) {
+      var b0 = hx - 3 * u, b1 = hx + hw + 3 * u, byy = hy + 1.2 * u; top = hy - 2.9 * u;
+      P.fillPoly([[b0, byy], [hx + 1.4 * u, byy - 0.9 * u], [hx + 2.4 * u, hy - 2.2 * u], [hcx, top], [hx + hw - 2.4 * u, hy - 2.2 * u], [hx + hw - 1.4 * u, byy - 0.9 * u], [b1, byy], [hcx, byy + 1.2 * u]]);
+      P.w("bold").curve([[b0, byy], [hcx - hw * 0.22, byy + 1.1 * u], [hcx + hw * 0.22, byy + 1.1 * u], [b1, byy]], false, 0.3);
+      P.curve([[b0, byy], [hx + 1.4 * u, byy - 0.9 * u], [hx + 2.4 * u, hy - 2.2 * u], [hcx, top], [hx + hw - 2.4 * u, hy - 2.2 * u], [hx + hw - 1.4 * u, byy - 0.9 * u], [b1, byy]], false, 0.3);
+      P.w("fine").line(hx + 1.8 * u, byy - 1.2 * u, hx + hw - 1.8 * u, byy - 1.2 * u, 0);
+    }
+    var ax = hcx - d * 0.5 * u; P.w("bold");
+    if (o.ant === 1) {
+      P.line(ax - 2 * u, top + 0.3 * u, ax - 3 * u, top - 2.6 * u, 0).line(ax + 2 * u, top + 0.3 * u, ax + 3 * u, top - 2.6 * u, 0);
+      P.dot(ax - 3 * u, top - 2.9 * u, 0.6 * u).dot(ax + 3 * u, top - 2.9 * u, 0.6 * u);
+    } else if (o.ant === 2) {
+      P.poly([[ax, top], [ax + 0.2 * u, top - 1.6 * u], [ax + 1.8 * u, top - 2.1 * u], [ax + 1.6 * u, top - 3.6 * u]], false, 0); P.dot(ax + 1.6 * u, top - 3.9 * u, 0.62 * u);
+    } else if (o.ant !== 3) {
+      P.line(ax, top, ax, top - 2.9 * u, 0);
+      if (big) { P.fillOval(ax, top - 3.7 * u, 0.9 * u, 0.9 * u); P.oval(ax, top - 3.7 * u, 0.9 * u, 0.9 * u, 6); } else P.dot(ax, top - 3.3 * u, 0.7 * u);
+    }
+    // arms
+    var hands = {};
+    [["L", -1, o.aL], ["R", 1, o.aR]].forEach(function (a) {
+      var sd = d || a[1], sx = a[1] * (bw / 2 + 0.1 * u), sy = by + 1.8 * u, ang = (a[2] == null ? 6 : a[2]) * RAD, L = (o.arm || 6.6) * u;
+      var a1 = ang - (big ? 0.28 : 0), a2 = ang + (big ? 0.28 : 0);
+      var kx = sx + Math.sin(a1) * L * 0.5 * sd, ky = sy + Math.cos(a1) * L * 0.5, px = kx + Math.sin(a2) * L * 0.5 * sd, py = ky + Math.cos(a2) * L * 0.5;
+      P.w("bold");
+      if (big) {
+        P.line(sx, sy, kx, ky, 0).line(kx, ky, px, py, 0); P.fillOval(sx, sy, 0.75 * u, 0.75 * u); P.oval(sx, sy, 0.75 * u, 0.75 * u, 5);
+        P.fillOval(px, py, 0.95 * u, 0.95 * u); P.oval(px, py, 0.95 * u, 0.95 * u, 6);
+      } else { P.line(sx, sy, px, py, 0); P.dot(px, py, 0.62 * u); }
+      hands[a[0]] = [px, py];
+    });
+    return { hands: hands, top: top, hcx: hcx, hy: hy, hh: hh, hw: hw, by: by, bw: bw, bh: bh, u: u };
+  }
+  // a random small robot (S: the sprite's own random source)
+  function anyRobot(S, o) {
+    o = o || {};
+    var v = { h: o.h || 20, face: o.face, head: (S() * 3) | 0, eyes: S() < 0.6 ? 0 : (S() < 0.5 ? 1 : 2), legs: S() < 0.62 ? 0 : (S() < 0.5 ? 1 : 2),
+      ant: (S() * 3) | 0, hat: S() < 0.12, aL: -6 + S() * 22, aR: S() < 0.3 ? 60 + S() * 80 : -4 + S() * 24 };
+    for (var k in o) v[k] = o[k];
+    return v;
+  }
+
+  // ---------------------------------------------------------------- plants and things
+  function leaf(P, x, y, ang, len) {
+    var c = Math.cos(ang), s = Math.sin(ang), w = len * 0.3;
+    var tip = [x + c * len, y + s * len];
+    P.curve([[x, y], [x + c * len * 0.5 - s * w, y + s * len * 0.5 + c * w], tip], false, 0.25);
+    P.curve([[x, y], [x + c * len * 0.5 + s * w, y + s * len * 0.5 - c * w], tip], false, 0.25);
+  }
+  function grass(P, x, y, s) {
+    P.w("fine"); s = s || 1;
+    P.line(x - 1.2 * s, y, x - 2.6 * s, y - 3.6 * s, 0).line(x, y, x + 0.2 * s, y - 4.8 * s, 0).line(x + 1.2 * s, y, x + 2.9 * s, y - 3.3 * s, 0);
+  }
+  function mound(P, w) {
+    P.w("bold").curve([[-w / 2, 0], [-w * 0.2, -w * 0.15], [w * 0.2, -w * 0.15], [w / 2, 0]], false, 0.3);
+    P.w("fine").line(-w * 0.2, -w * 0.04, -w * 0.05, -w * 0.04, 0).line(w * 0.08, -w * 0.07, w * 0.22, -w * 0.07, 0);
+  }
+  // A leafy blob: bumpy outline, a few leaf marks, slanted shade lines on the lower right. o.wash adds a pale fill,
+  // o.bloom flowers, o.bump the size of one bump in px.
+  function crown(P, cx, cy, rx, ry, S, o) {
+    o = o || {}; var i, bump = o.bump || 6.5, cr = (rx + ry) / 2;
+    var nb = Math.max(7, Math.round((rx + ry) * Math.PI / bump)), a0 = S() * TAU, rad = [], poly = [];
+    for (i = 0; i < nb; i++) rad.push(0.87 + 0.24 * S());
+    for (i = 0; i < nb; i++) { var a = a0 + i * TAU / nb; poly.push([cx + Math.cos(a) * rx * rad[i], cy + Math.sin(a) * ry * rad[i]]); }
+    P.fillPoly(poly);
+    if (o.wash) P.fillPoly(poly.map(function (p) { return [p[0] + bump * 0.3, p[1] + bump * 0.22]; }), "wash");
+    for (i = 0; i < nb; i++) {
+      var p = poly[i], q = poly[(i + 1) % nb], am = a0 + (i + 0.5) * TAU / nb, k = (rad[i] + rad[(i + 1) % nb]) / 2 * (1.16 + 0.1 * S()), gap = S() < (o.gaps == null ? 0.09 : o.gaps);
+      if (gap) continue;
+      P.w("bold").quad(p[0], p[1], cx + Math.cos(am) * rx * k, cy + Math.sin(am) * ry * k, q[0], q[1]);
+    }
+    P.w("fine");
+    var nm = Math.round(rx * ry / (5.2 * bump * bump) * (o.marks == null ? 1 : o.marks));
+    for (i = 0; i < nm; i++) {
+      var ma = S() * TAU, mr = Math.sqrt(S()) * 0.7, mx = cx + Math.cos(ma) * rx * mr, my = cy + Math.sin(ma) * ry * mr, mw = (0.34 + S() * 0.24) * bump;
+      P.curve([[mx - mw, my + mw * 0.3], [mx, my - mw * 0.5], [mx + mw, my + mw * 0.3]], false, 0.3);
+    }
+    if (o.shade !== false) {
+      var gapH = bump * 0.46;
+      for (var c = -rx * 0.2; c < rx * 1.7; c += gapH * (0.85 + 0.3 * S())) {
+        var first = null, last = null;
+        for (var s = 0; s <= 1.001; s += 0.05) {
+          var X = cx + c - s * ry * 1.2, Y = cy - ry * 0.2 + s * ry * 1.2, nx = (X - cx) / (rx * 0.84), ny = (Y - cy) / (ry * 0.84);
+          if (nx * nx + ny * ny < 1 && nx * 0.75 + ny * 0.66 > 0.56) { if (!first) first = [X, Y]; last = [X, Y]; }
+        }
+        if (first && last && first !== last) P.line(first[0], first[1], last[0], last[1], 0);
+      }
+    }
+    if (o.bloom) blooms(P, cx, cy, rx * 0.82, ry * 0.8, S, o.bloom, Math.max(1.5, bump * 0.26));
+  }
+  // small flowers spread evenly over an oval (n of them, size fs)
+  function blooms(P, cx, cy, rx, ry, S, n, fs) {
+    var a0 = S() * TAU;
+    for (var i = 0; i < n; i++) {
+      var fr = Math.sqrt((i + 0.6) / n), fa = a0 + i * 2.39996, fx = cx + Math.cos(fa) * rx * fr + (S() - 0.5) * fs, fy = cy + Math.sin(fa) * ry * fr + (S() - 0.5) * fs;
+      if (fs < 2.6) { P.fillOval(fx, fy, fs * 1.25, fs * 1.25); P.fillOval(fx, fy, fs, fs, "tint"); P.w("bold").oval(fx, fy, fs, fs, 6); P.dot(fx, fy, 0.5); }
+      else {
+        P.fillOval(fx, fy, fs * 1.5, fs * 1.5); P.fillOval(fx, fy, fs * 1.3, fs * 1.3, "tint"); P.w("bold");
+        for (var pt = 0; pt < 5; pt++) { var pa = pt * TAU / 5 + fa; P.oval(fx + Math.cos(pa) * fs * 0.78, fy + Math.sin(pa) * fs * 0.78, fs * 0.55, fs * 0.55, 5); }
+        P.dot(fx, fy, fs * 0.22);
+      }
+    }
+  }
+  // A tree that grows in steps. Origin: foot of the trunk. st 0 (bare soil) .. 6 (in bloom). sc scales it.
+  function tree(P, st, S, sc, o) {
+    sc = sc || 1; o = o || {};
+    if (o.mound !== false && st <= 2) mound(P, 11 * sc);
+    if (st <= 0) return;
+    P.w("bold");
+    if (st === 1) { P.line(0, 0, 0, -4.5 * sc, 0); leaf(P, 0, -4.2 * sc, -2.45, 4.6 * sc); leaf(P, 0, -4.2 * sc, -0.7, 4.6 * sc); return; }
+    if (st === 2) {
+      P.curve([[0, 0], [0.8 * sc, -6 * sc], [-0.3 * sc, -13 * sc]], false, 0.3);
+      leaf(P, 0.5 * sc, -5 * sc, -0.5, 5 * sc); leaf(P, 0.4 * sc, -8 * sc, -2.7, 5 * sc); leaf(P, -0.2 * sc, -12.5 * sc, -2.3, 4.6 * sc); leaf(P, -0.2 * sc, -12.5 * sc, -0.9, 4.6 * sc);
+      return;
+    }
+    var th = [0, 0, 0, 12, 18, 24, 28][st] * sc, cr = [0, 0, 0, 8, 13, 18.5, 23][st] * sc;
+    var lean = (S() - 0.5) * 3 * sc, cx = lean, cy = -th - cr * 0.6, rx = cr * 1.12, ry = cr * 0.92, tw = (0.9 + st * 0.28) * sc;
+    P.fillPoly([[-tw, 0], [-tw * 0.6 + lean * 0.5, -th], [tw * 0.6 + lean * 0.5, -th], [tw, 0]]);
+    P.line(-tw * 1.5, 0.2, -tw * 0.62 + lean * 0.5, -th + cr * 0.12, 0).line(tw * 1.4, 0.2, tw * 0.62 + lean * 0.5, -th + cr * 0.12, 0);
+    P.w("fine");
+    if (st >= 4) { P.line(lean * 0.5, -th + cr * 0.1, cx - rx * 0.4, cy + ry * 0.05, 0).line(lean * 0.5, -th + cr * 0.1, cx + rx * 0.36, cy - ry * 0.1, 0); if (st >= 5) P.line(lean * 0.5, -th, cx + rx * 0.02, cy - ry * 0.45, 0); }
+    crown(P, cx, cy, rx, ry, S, { bump: (o.bump || 6.5) * Math.sqrt(sc), wash: o.wash, bloom: st >= 6 ? Math.round(6 + cr / sc * 0.2) : 0 });
+    return { cx: cx, cy: cy, rx: rx, ry: ry };
+  }
+  function pot(P, w) {
+    var h = w * 0.82;
+    P.fillPoly([[-w * 0.56, -h - w * 0.16], [w * 0.56, -h - w * 0.16], [w * 0.5, -h], [w * 0.36, 0], [-w * 0.36, 0], [-w * 0.5, -h]]);
+    P.w("bold").poly([[-w * 0.47, -h], [-w * 0.36, 0], [w * 0.36, 0], [w * 0.47, -h]], false, 0.3);
+    P.poly([[-w * 0.56, -h], [-w * 0.56, -h - w * 0.16], [w * 0.56, -h - w * 0.16], [w * 0.56, -h]], true, 0.3);
+    P.hatch(w * 0.08, -h + 1, w * 0.26, h - 2, Math.max(1.6, w * 0.13));
+    return h + w * 0.16;
+  }
+  function board(P, w, h, leg, o) {
+    o = o || {}; var x = -w / 2, y = -leg - h, pw = Math.max(0.7, w * 0.022);
+    P.fillBox(x, y, w, h);
+    P.w("bold");
+    [-1, 1].forEach(function (sg) {
+      var px = sg * w * 0.33;
+      P.fillBox(px - pw, y + h, pw * 2, leg);
+      if (pw > 1) P.line(px - pw, 0, px - pw, y + h, 0).line(px + pw, 0, px + pw, y + h, 0); else P.line(px, 0, px, y + h, 0);
+    });
+    P.poly([[x, y], [x + w, y], [x + w, y + h], [x, y + h]], true);
+    if (w > 34) { P.w("fine").poly([[x + 2.2, y + 2.2], [x + w - 2.2, y + 2.2], [x + w - 2.2, y + h - 2.2], [x + 2.2, y + h - 2.2]], true, 0.2); }
+    if (o.roof) { P.w("bold").poly([[x - w * 0.08, y - 1], [0, y - h * 0.26], [x + w + w * 0.08, y - 1]], false, 0.8); }
+  }
+  function note(P, w, h) {       // origin: the pin, top centre
+    P.fillBox(-w / 2, 0, w, h); P.fillBox(-w / 2, 0, w, h, "tint");
+    P.w(w < 5 ? "fine" : "bold").poly([[-w / 2, 0], [w / 2, 0], [w / 2, h], [-w / 2, h]], true, 0.15);
+    if (w >= 5) { P.w("fine").line(-w * 0.3, h * 0.42, w * 0.3, h * 0.42, 0).line(-w * 0.3, h * 0.68, w * 0.12, h * 0.68, 0); P.dot(0, h * 0.14, Math.max(0.5, w * 0.06)); }
+  }
+  function sparks(P, s) {
+    s = s || 1; P.w("bold");
+    [-128, -90, -52].forEach(function (a) { P.line(Math.cos(a * RAD) * 2 * s, Math.sin(a * RAD) * 2 * s, Math.cos(a * RAD) * 5.2 * s, Math.sin(a * RAD) * 5.2 * s, 0); });
+  }
+  function wcan(P, s, d) {        // watering can held at origin (the handle), spout toward d
+    var w = 9 * s, h = 7.5 * s;
+    P.fillPoly([[-w * 0.5, 0], [w * 0.5, 0], [w * 0.42, h], [-w * 0.42, h]]);
+    P.w("bold").poly([[-w * 0.5, 0], [w * 0.5, 0], [w * 0.42, h], [-w * 0.42, h]], true, 0.3);
+    P.curve([[-d * w * 0.5, h * 0.15], [-d * w * 0.95, h * 0.4], [-d * w * 0.5, h * 0.8]], false, 0.3);        // handle
+    P.line(d * w * 0.46, h * 0.62, d * w * 1.25, -h * 0.05, 0);                                               // spout
+    P.line(d * w * 1.12, -h * 0.3, d * w * 1.4, h * 0.16, 0);
+    P.hatch(w * 0.02, 1, w * 0.36, h - 2, 1.6 * s);
+    return [d * w * 1.32, -h * 0.02];
+  }
+
+  window.SK = { el: el, rng: rng, clamp: clamp, ease: ease, f: f, Pen: Pen, sprite: sprite, place: place, show: show, fade: fade, drawOn: drawOn,
+    robot: robot, anyRobot: anyRobot, leaf: leaf, grass: grass, mound: mound, tree: tree, crown: crown, blooms: blooms, pot: pot, board: board, note: note, sparks: sparks, wcan: wcan, RAD: RAD, TAU: TAU };
+})();
+</script>
 <script data-from="post1/demos/masthead.js">
-/* masthead.js: the animation under the title of post 1 (mount #masthead, no data).
+/* masthead.js: the animation under the title of post 1 (mount #masthead, no data). Drawn with demos/sketch.js.
  *
- * One quiet loop of about 16 s that shows the post's idea without words. 100 agents start alone (grey points).
- * They gather into ten teams of ten, each around its forum board (accent points, thin spokes). Inside a team an
- * agent posts a finding (a point runs to the board), the board's level rises, and teammates read it (points run
- * back, a ring marks each reader). At the end the best team gets a dark board and a soft wash, as in the opening
- * figure. Then the teams let go and the loop starts again.
+ * A hand-drawn garden in ink with a pale grey wash, one quiet loop of 15.4 s. Ten robots stand alone, each with a
+ * small pot. Ten more robots share one notice board (the forum). Each plant grows a little. Every note that a
+ * team robot pins on the board makes the team's one tree grow a step, until it stands far above the pots and
+ * blooms. Then the drawing fades and starts again.
  *
- * Nothing here is measured: positions, levels and the choice of the best team are made up for the drawing.
+ * Nothing here is measured: positions, plant sizes and the times of the notes are made up for the drawing.
  * Every frame is a pure function of time (paint(t)), so mount.__seek(t) can show any moment (used for previews
  * and for the social video). The loop runs only while the figure is on screen, the small pause button stops it,
- * and with reduced motion the figure shows the teams and does not move.
+ * and with reduced motion the figure shows the grown tree and does not move.
+ *
+ * Two layouts. Wide (600px and up): one row, the team in the middle and five lone robots on each side.
+ * Narrow: the team on top and the ten lone robots in a row below it, so the robots stay large enough to read.
  */
 DemoKit.register("masthead", function (mount, data, kit, opts) {
   "use strict";
+  var S = window.SK;
+  if (!S) { if (window.console) console.warn("masthead: demos/sketch.js is not loaded"); return; }
+  var el = S.el, ease = S.ease, sprite = S.sprite, place = S.place;
   var id = opts.id || "masthead", ID = "#" + id;
 
   kit.style("masthead-" + id, [
     ID + " .demo-mount { position: relative; }",
-    ID + " svg { display: block; overflow: visible; }",
-    ID + " svg .mh-spoke { stroke: var(--team); stroke-width: 1; }",
-    ID + " svg .mh-board { fill: var(--panel); stroke: var(--hair-strong); stroke-width: 1; }",
-    ID + " svg .mh-board-best { fill: var(--ink); }",
-    ID + " svg .mh-track { fill: var(--hair-strong); }",
-    ID + " svg .mh-level { fill: var(--team); }",
-    ID + " svg .mh-level-best { fill: var(--paper); }",
-    ID + " svg .mh-wash { fill: var(--team); fill-opacity: .09; stroke: var(--team); stroke-opacity: .3; stroke-width: 1; }",
-    ID + " svg .mh-msg { fill: var(--team); stroke: var(--paper); stroke-width: 1; }",
-    ID + " svg .mh-ring { fill: none; stroke: var(--team); stroke-width: 1; }",
-    ID + " svg .mh-label { font: 500 10.5px var(--font-mono); letter-spacing: .09em; fill: var(--muted); }",
+    ID + " svg { display: block; margin-inline: auto; overflow: visible; }",
+    ID + " .sk-mask { fill: var(--paper); }",
+    ID + " .sk-wash { fill: var(--muted); fill-opacity: .13; }",
+    ID + " .sk-tint { fill: none; }",
+    ID + " .sk-fine, " + ID + " .sk-bold { fill: none; stroke: var(--ink); stroke-linecap: round; stroke-linejoin: round;" +
+      " vector-effect: non-scaling-stroke; }",
+    ID + " .sk-fine { stroke-width: calc(.7px * var(--mh-k, 1)); stroke-opacity: .78; }",
+    ID + " .sk-bold { stroke-width: calc(1.2px * var(--mh-k, 1)); }",
+    ID + " .sk-ink { fill: var(--ink); }",
+    // three drawings of every line; one shows at a time
+    ID + " svg.boil0 .sk-b1, " + ID + " svg.boil0 .sk-b2, " + ID + " svg.boil1 .sk-b0, " + ID + " svg.boil1 .sk-b2, " +
+      ID + " svg.boil2 .sk-b0, " + ID + " svg.boil2 .sk-b1 { display: none; }",
+    ID + " svg .mh-label { font: 500 10.5px var(--font-mono); letter-spacing: .09em; fill: var(--muted); text-anchor: middle; }",
     ID + " .mh-pause { position: absolute; right: 0; bottom: 0; margin: 0; padding: 2px 0; border: 0; background: none;" +
       " cursor: pointer; font: 11px var(--font-mono); color: var(--muted); }",
     ID + " .mh-pause:hover, " + ID + " .mh-pause:focus-visible { color: var(--ink); text-decoration: underline; }"
   ].join("\n"));
 
-  var N = 100, K = 10, BEST = 3;
   // seconds
-  var T_GATHER = 2.4, D_GATHER = 2.0, T_WORK = 4.7, T_BEST = 11.6, T_OUT = 14.8, D_OUT = 1.4;
-  var LOOP = 16.6, T_STILL = 13.4;
-  var POST_DUR = 0.5, READ_LAG = 0.25, READ_DUR = 0.55, RING_DUR = 0.55, GROW = 0.4;
+  var LOOP = 15.4, T_END = 13.6, T_STILL = 11, BOIL = 0.22;
+  var TN = [2.5, 3.8, 5.1, 6.4, 7.7, 9.0];                // when each of the six notes lands on the board
+  var NARROW_BELOW = 600, NARROW_MAX = 420;               // CSS px
 
-  function clamp(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
-  function ease(x) { x = clamp(x); return x * x * (3 - 2 * x); }
-  function hex(c) {
-    var m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(String(c).trim());
-    return m ? [parseInt(m[1], 16), parseInt(m[2], 16), parseInt(m[3], 16)] : [120, 120, 120];
-  }
-  var C_LONE = hex(kit.color("lone")), C_TEAM = hex(kit.color("team"));
-  function mix(g) {
-    return "rgb(" + Math.round(C_LONE[0] + (C_TEAM[0] - C_LONE[0]) * g) + "," + Math.round(C_LONE[1] + (C_TEAM[1] - C_LONE[1]) * g) +
-      "," + Math.round(C_LONE[2] + (C_TEAM[2] - C_LONE[2]) * g) + ")";
-  }
+  // The team, in drawing units around its tree (x = 500): [x, back row?, robot options]
+  var TEAM = [[326, 1, { face: 1 }], [350, 0, { face: 1 }], [380, 1, { face: 1 }], [410, 0, { face: 1, hat: true, ant: 3 }],
+    [440, 1, { face: 1 }], [466, 0, { face: 1, can: 1 }], [540, 0, { face: 1, aR: 128, arm: 7.6 }], [652, 0, { face: -1 }],
+    [678, 1, { face: -1 }], [704, 0, { face: -1 }]];
+  var POSTER = [1, 7, 3, 9, 0, 6], READERS = [1, 3, 5, 6, 8, 0, 2, 4, 7, 9];     // who pins note i; who reads it (4 in a row)
+  var NOTE_AT = [[-17, -63], [0, -63], [17, -63], [-17, -47], [0, -47], [17, -47]];   // places on the board
+  // the crown of the grown tree: [x, y, rx, ry, shaded?]
+  var LOBES = [[0, -212, 66, 44, 0], [-70, -176, 54, 42, 0], [72, -174, 56, 42, 1], [-84, -124, 44, 34, 0], [88, -122, 44, 34, 1],
+    [-22, -146, 58, 44, 0], [38, -134, 54, 40, 1]];
 
-  // ---- the made-up story: who posts when, who reads it, and how far each board's level gets.
-  var story = kit.rng(7);
-  var END = [], EVENTS = [];                              // END[k]: final level of team k (0..1)
-  (function () {
-    for (var k = 0; k < K; k++) {
-      END.push(k === BEST ? 0.96 : 0.42 + 0.36 * story());
-      var n = k === BEST ? 5 : 3 + story.int(2), span = T_BEST - 1.5 - T_WORK;
-      for (var e = 0; e < n; e++) {
-        var poster = story.int(10), others = [];
-        for (var j = 0; j < 10; j++) if (j !== poster) others.push(j);
-        EVENTS.push({ k: k, at: T_WORK + 0.15 + span * (e + 0.15 + 0.7 * story()) / n, poster: poster,
-          readers: story.sample(others, 3 + story.int(3)), gain: END[k] / n });
-      }
+  function layout(narrow) {
+    if (!narrow) {
+      return { narrow: false, W: 1000, H: 340, dx: 0, gy: 290, ground: [[291, 8, 992]],
+        lone: [34, 92, 150, 208, 266, 748, 806, 862, 918, 972].map(function (x) { return [x, 294, x < 500 ? 1 : -1]; }),
+        loneH: 31, potDx: 23, potW: 13, plantK: 0.95, cans: [1, 8], canK: 1.15,
+        labels: [[150, 330, "EACH ALONE"], [860, 330, "EACH ALONE"], [525, 330, "TEN ON ONE FORUM"]] };
     }
-  })();
+    var lone = [];
+    for (var i = 0; i < 10; i++) lone.push([24 + i * 41.5, 388, 1]);
+    return { narrow: true, W: 440, H: 430, dx: -295, gy: 288, ground: [[289, 8, 432], [385, 8, 432]],
+      lone: lone, loneH: 27, potDx: 20.5, potW: 12, plantK: 0.9, cans: [], canK: 1,
+      labels: [[230, 327, "TEN ON ONE FORUM"], [220, 422, "EACH ALONE"]] };
+  }
 
-  var G = null;            // geometry and live nodes of the current drawing
+  function lerp(a, b, g) { return a + (b - a) * g; }
+  function vis(g, on) { if (g.__on !== on) { g.__on = on; g.style.display = on ? "" : "none"; } }
+  function groundLine(P, Q, y, x0, x1) {
+    var k = (x1 - x0) / 984, x = x0, n;
+    P.w("bold");
+    while (x < x1 - 4) {
+      var x2 = Math.min(x1, x + 90 + Q() * 170), pts = [];
+      for (var xx = x; xx < x2 - 20; xx += 40) pts.push([xx, y + (Q() - 0.5) * 1.6]);
+      pts.push([x2, y + (Q() - 0.5)]); if (pts.length > 1) P.curve(pts, false, 0.5);
+      x = x2 + 7 + Q() * 12;
+    }
+    for (n = 0; n < Math.round(26 * k); n++) S.grass(P, x0 + 6 + Q() * (x1 - x0 - 12), y + Q() * 2, 0.9 + Q() * 0.5);
+    P.w("fine"); for (n = 0; n < Math.round(12 * k); n++) P.oval(x0 + 6 + Q() * (x1 - x0 - 12), y + 7 + Q() * 8, 2 + Q() * 1.5, 1 + Q() * 0.5, 5);
+  }
+  function canBot(P, o, cs) {                             // a robot with a watering can in the hand on the side it faces
+    var d = o.face || 1; if (d > 0) o.aR = o.aR == null || o.aR < 30 ? 60 : o.aR; else o.aL = o.aL == null || o.aL < 30 ? 60 : o.aL;
+    var rb = S.robot(P, o), hnd = d > 0 ? rb.hands.R : rb.hands.L, w = 9 * cs, h = 7.5 * cs;
+    P.at(hnd[0] + d * w * 0.95, hnd[1] - h * 0.4, d * 20, 1, d < 0); S.wcan(P, cs, 1); P.home();
+    return rb;
+  }
+  function bigTree(parent, seed) {                        // the grown tree: trunk with two boughs, seven crown lobes
+    var g = el("g", {}, parent);
+    sprite(g, seed, function (P, Q) {
+      P.fillPoly([[-10, 0], [-6, -40], [-5.5, -100], [5.5, -100], [6, -40], [11, 0]]);
+      P.fillPoly([[-5, -60], [-48, -100], [-44, -108], [-5, -78]]); P.fillPoly([[5, -56], [52, -96], [48, -104], [5, -74]]);
+      P.w("bold").curve([[-17, 1], [-9, -7], [-6.2, -40], [-5.6, -62]], false, 0.6).curve([[18, 1], [9.5, -7], [6.4, -40], [5.8, -58]], false, 0.6);
+      P.curve([[-5.6, -62], [-24, -84], [-48, -100]], false, 0.6).curve([[-5.4, -78], [-20, -94], [-44, -108]], false, 0.6);
+      P.curve([[5.8, -58], [26, -80], [52, -96]], false, 0.6).curve([[5.6, -74], [22, -90], [48, -104]], false, 0.6);
+      P.line(-5.4, -78, -5, -102, 0).line(5.6, -74, 5, -102, 0);
+      P.w("fine"); for (var n = 0; n < 7; n++) { var x = -4 + Q() * 6, y = -8 - Q() * 60; P.line(x, y, x + (Q() - 0.5), y - 5 - Q() * 6, 0); }
+      P.hatch(1.5, -56, 4, 50, 3);
+      S.grass(P, -20, 1, 1.4); S.grass(P, 23, 2, 1.2);
+    }, 0.8);
+    LOBES.forEach(function (L, n) {
+      sprite(g, seed + 1 + n, function (P, Q) { S.crown(P, L[0], L[1], L[2], L[3], Q, { bump: 9.5, wash: true, marks: 0.7, shade: !!L[4], gaps: 0.06 }); }, 0.8);
+    });
+    return g;
+  }
+
+  var G = null;            // the current drawing: its layout and live nodes
   var playing = false, paused = false, started = false, raf = 0, t0 = 0, tNow = T_STILL, visible = false;
   var still = kit.reducedMotion();
 
-  function blob(pts) {                                    // a smooth closed path through pts (Catmull-Rom as Beziers)
-    var n = pts.length, d = "M" + pts[0][0].toFixed(1) + "," + pts[0][1].toFixed(1);
-    for (var i = 0; i < n; i++) {
-      var p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
-      d += "C" + (p1[0] + (p2[0] - p0[0]) / 6).toFixed(1) + "," + (p1[1] + (p2[1] - p0[1]) / 6).toFixed(1) + " " +
-        (p2[0] - (p3[0] - p1[0]) / 6).toFixed(1) + "," + (p2[1] - (p3[1] - p1[1]) / 6).toFixed(1) + " " +
-        p2[0].toFixed(1) + "," + p2[1].toFixed(1);
-    }
-    return d + "Z";
-  }
-
-  function draw() {
+  function build(L) {
     mount.replaceChildren();
-    var W = Math.max(280, kit.width(mount)), narrow = W < 640;
-    var foot = 24, top = narrow ? 6 : 10;
-    var fieldH = narrow ? Math.round(W * 0.54) : Math.round(Math.min(336, Math.max(280, W * 0.34)));
-    var H = top + fieldH + foot;
-    var cols = 5, cw = W / cols, ch = fieldH / 2;
-    var R = Math.min(cw, ch) * (narrow ? 0.41 : 0.38);
-    var dotR = narrow ? 1.7 : 3, bw = narrow ? 16 : 30, bh = narrow ? 9 : 14;
-    var rnd = kit.rng(23);
+    var svg = el("svg", { viewBox: "0 0 " + L.W + " " + L.H, "class": "boil0", "aria-hidden": "true" }, mount);
+    var story = S.rng(31), all = el("g", {}, svg), GY = L.gy, TX = 500 + L.dx, BX = 598 + L.dx, i;
+    var ground = el("g", {}, all);
+    L.ground.forEach(function (a, n) { sprite(ground, 800 + n, function (P, Q) { groundLine(P, Q, a[0], a[1], a[2]); }, 0.6); });
+    var things = el("g", {}, all), gBack = el("g", {}, things), gTree = el("g", {}, all), gFront = el("g", {}, things), gFx = el("g", {}, all);
 
-    // 100 scattered places (a loose 20 x 5 grid), split into ten groups of ten that sit near each other
-    var gx = W / 20, gy = fieldH / 5, pts = [];
-    for (var r = 0; r < 5; r++) for (var c = 0; c < 20; c++) {
-      pts.push({ col: c, sx: (c + 0.5) * gx + (rnd() - 0.5) * gx * 0.72, sy: top + (r + 0.5) * gy + (rnd() - 0.5) * gy * 0.72 });
-    }
-    var teams = [];
-    for (var b = 0; b < cols; b++) {
-      var block = pts.filter(function (p) { return Math.floor(p.col / 4) === b; }).sort(function (p, q) { return p.sy - q.sy; });
-      [0, 1].forEach(function (row) {
-        var k = row * cols + b;
-        var cx = (b + 0.5) * cw + (rnd() - 0.5) * cw * 0.10, cy = top + (row + 0.5) * ch + (rnd() - 0.5) * ch * 0.08;
-        var a0 = rnd() * Math.PI * 2, slots = [];
-        for (var j = 0; j < 10; j++) {
-          var ang = a0 + j * Math.PI / 5 + (rnd() - 0.5) * 0.3, len = R * (0.68 + 0.32 * rnd());
-          slots.push({ ang: ang, x: cx + Math.cos(ang) * len, y: cy + Math.sin(ang) * len });
-        }
-        var mem = block.slice(row * 10, row * 10 + 10).sort(function (p, q) {
-          return Math.atan2(p.sy - cy, p.sx - cx) - Math.atan2(q.sy - cy, q.sx - cx);
-        });
-        slots.sort(function (p, q) { return Math.atan2(p.y - cy, p.x - cx) - Math.atan2(q.y - cy, q.x - cx); });
-        var bestRot = 0, bestCost = Infinity;             // turn the ring of seats so every agent has a short way to go
-        for (var rot = 0; rot < 10; rot++) {
-          var cost = 0;
-          for (var m = 0; m < 10; m++) { var s = slots[(m + rot) % 10]; cost += Math.pow(mem[m].sx - s.x, 2) + Math.pow(mem[m].sy - s.y, 2); }
-          if (cost < bestCost) { bestCost = cost; bestRot = rot; }
-        }
-        teams[k] = { cx: cx, cy: cy, members: mem.map(function (p, m) {
-          var s = slots[(m + bestRot) % 10];
-          // wx, wy: whole turns per loop of the small drift, so the last frame meets the first
-          return { k: k, sx: p.sx, sy: p.sy, tx: s.x, ty: s.y, delay: 0.5 * rnd(), ph: rnd() * Math.PI * 2, wx: 3 + rnd.int(4), wy: 3 + rnd.int(4) };
-        }) };
-      });
-    }
-
-    var gWash = kit.svg("g"), gSpoke = kit.svg("g"), gDot = kit.svg("g"), gBoard = kit.svg("g"), gLive = kit.svg("g"), gText = kit.svg("g");
-    var agents = [], boards = [];
-    teams.forEach(function (tm, k) {
-      tm.members.forEach(function (a) {
-        a.line = gSpoke.appendChild(kit.svg("line", { class: "mh-spoke", x2: tm.cx.toFixed(1), y2: tm.cy.toFixed(1), opacity: 0 }));
-        a.dot = gDot.appendChild(kit.svg("circle", { r: dotR }));
-        agents.push(a);
-      });
-      var g = gBoard.appendChild(kit.svg("g", { transform: "translate(" + tm.cx.toFixed(1) + "," + tm.cy.toFixed(1) + ")", opacity: 0 }));
-      g.appendChild(kit.svg("rect", { class: "mh-board", x: -bw / 2, y: -bh / 2, width: bw, height: bh, rx: 2 }));
-      var dark = k === BEST ? g.appendChild(kit.svg("rect", { class: "mh-board-best", x: -bw / 2, y: -bh / 2, width: bw, height: bh, rx: 2, opacity: 0 })) : null;
-      var lvH = narrow ? 2 : 3, lvW = bw - (narrow ? 5 : 10);
-      g.appendChild(kit.svg("rect", { class: "mh-track", x: -lvW / 2, y: -lvH / 2, width: lvW, height: lvH }));
-      var lv = g.appendChild(kit.svg("rect", { class: "mh-level", x: -lvW / 2, y: -lvH / 2, width: 0, height: lvH }));
-      var lvB = k === BEST ? g.appendChild(kit.svg("rect", { class: "mh-level-best", x: -lvW / 2, y: -lvH / 2, width: 0, height: lvH, opacity: 0 })) : null;
-      boards.push({ g: g, dark: dark, lv: lv, lvB: lvB, lvW: lvW });
+    var team = TEAM.map(function (a, n) {
+      var b = { x: a[0] + L.dx, y: a[1] ? GY - 5 : GY + 4, h: a[1] ? 27 : 31, reads: [] };
+      b.g = sprite(a[1] ? gBack : gFront, 100 + n, function (P, Q) {
+        var o = S.anyRobot(Q, { h: b.h, hat: false }); for (var k in a[2]) o[k] = a[2][k];
+        if (o.can) canBot(P, o, 1.15); else S.robot(P, o);
+      }, 0.6);
+      place(b.g, b.x, b.y);
+      b.spark = sprite(b.g, 150 + n, function (P) { S.sparks(P, 1.2); }, 0.4); place(b.spark, 0, -b.h * 1.36); vis(b.spark, false);
+      return b;
     });
-    var bt = teams[BEST], out = narrow ? 5 : 11;
-    var ring = bt.members.map(function (a) {
-      var dx = a.tx - bt.cx, dy = a.ty - bt.cy, d = Math.hypot(dx, dy) || 1;
-      return [a.tx + dx / d * out, a.ty + dy / d * out];
-    }).sort(function (p, q) { return Math.atan2(p[1] - bt.cy, p[0] - bt.cx) - Math.atan2(q[1] - bt.cy, q[0] - bt.cx); });
-    var wash = gWash.appendChild(kit.svg("path", { class: "mh-wash", d: blob(ring), opacity: 0 }));
-
-    var pool = [], rings = [];
-    for (var i = 0; i < 90; i++) pool.push(gLive.appendChild(kit.svg("circle", { class: "mh-msg", r: narrow ? 1.6 : 2.6, opacity: 0 })));
-    for (i = 0; i < 70; i++) rings.push(gLive.appendChild(kit.svg("circle", { class: "mh-ring", opacity: 0 })));
-    var labels = ["100 AGENTS, EACH ALONE", narrow ? "THE SAME 100, IN TEN TEAMS" : "THE SAME 100, AS TEN TEAMS OF TEN", "KEEP THE BEST TEAM"].map(function (s) {
-      return gText.appendChild(kit.svg("text", { class: "mh-label", x: 0, y: H - 6, text: s, opacity: 0 }));
+    // the notice board (the forum) and its notes
+    place(sprite(gBack, 300, function (P) { S.board(P, 58, 40, 27, { roof: true }); }, 0.6), BX, GY + 1);
+    var notes = NOTE_AT.map(function (p, n) {
+      var g = sprite(gFront, 310 + n, function (P) { S.note(P, 9, 10.5); }, 0.4); place(g, BX + p[0], GY + 1 + p[1], 1, (story() - 0.5) * 10); return g;
     });
+    var flies = TN.map(function (te, n) {
+      var from = team[POSTER[n]];
+      READERS.slice(n, n + 4).forEach(function (m) { if (team[m] !== from) team[m].reads.push(te); });
+      return { te: te, from: from, to: NOTE_AT[n], g: sprite(gFx, 330 + n, function (P) { S.note(P, 9, 10.5); }, 0.4) };
+    });
+    // the team's tree: four young steps, then the grown tree (small, full, in bloom)
+    var tg = el("g", {}, gTree), young = [];
+    [[1, 1.7, 0.6], [2, 1.9, 0.6], [4, 1.8, 0.7], [5, 2.5, 0.8]].forEach(function (a, n) {
+      young.push(sprite(tg, 810 + n, function (P, Q) { S.tree(P, a[0], Q, a[1], n > 1 ? { wash: true } : {}); }, a[2]));
+    });
+    var grown = bigTree(tg, 820);
+    var flowers = sprite(tg, 840, function (P, Q) { S.blooms(P, 0, -166, 112, 76, Q, 22, 3.3); }, 0.6);
+    // ten robots alone, each with a pot
+    var potH = L.potW * 0.98;
+    var lone = L.lone.map(function (a, n) {
+      var x = a[0], y = a[1], d = a[2], b = { final: 1 + ((story() * 2.7) | 0), t2: 3 + story() * 3.2, t3: 6.6 + story() * 2.6, st: [] };
+      place(sprite(gFront, 400 + n, function (P, Q) {
+        var o = S.anyRobot(Q, { h: L.loneH, face: d, aR: 4, aL: 4 });
+        if (L.cans.indexOf(n) >= 0) canBot(P, o, L.canK); else S.robot(P, o);
+      }, 0.6), x, y);
+      place(sprite(gFront, 420 + n, function (P) { S.pot(P, L.potW); }, 0.5), x + d * L.potDx, y);
+      for (var s = 1; s <= b.final; s++) {
+        b.st[s] = sprite(gFront, 440 + n, (function (s) { return function (P, Q) { S.tree(P, s, Q, L.plantK, { mound: false, wash: true }); }; })(s), 0.5);
+        place(b.st[s], x + d * L.potDx, y - potH + 0.14);
+      }
+      return b;
+    });
+    var labels = L.labels.map(function (a) { var t = el("text", { x: a[0], y: a[1], "class": "mh-label" }, svg); t.textContent = a[2]; return t; });
 
-    mount.appendChild(kit.svg("svg", { width: W, height: H, viewBox: "0 0 " + W + " " + H, "aria-hidden": "true" },
-      [gWash, gSpoke, gBoard, gDot, gLive, gText]));
     if (!still) {
       var btn = kit.el("button", { type: "button", class: "mh-pause", text: paused ? "play" : "pause" });
       btn.addEventListener("click", function () { paused = !paused; btn.textContent = paused ? "play" : "pause"; sync(); });
       mount.appendChild(btn);
     }
-    G = { teams: teams, agents: agents, boards: boards, wash: wash, pool: pool, rings: rings, labels: labels, dotR: dotR, narrow: narrow };
+    G = { L: L, svg: svg, ground: ground, things: things, team: team, notes: notes, flies: flies, tg: tg, young: young, grown: grown,
+      flowers: flowers, lone: lone, labels: labels, TX: TX, BX: BX, boil: 0, op: "", pop: -1, big: -1 };
+    fit();
     paint(tNow);
+  }
+
+  // Size the drawing to the mount. Lines and labels keep their size on screen when the drawing is scaled down.
+  function fit() {
+    var avail = Math.max(280, kit.width(mount)), w = G.L.narrow ? Math.min(avail, NARROW_MAX) : avail, k = w / G.L.W;
+    G.svg.setAttribute("width", Math.round(w)); G.svg.setAttribute("height", Math.round(G.L.H * k));
+    G.svg.style.setProperty("--mh-k", Math.max(0.78, Math.min(1, k)).toFixed(3));
+    G.labels.forEach(function (t) { t.style.fontSize = (10.5 / k).toFixed(2) + "px"; });
+  }
+  function draw() {
+    var narrow = Math.max(280, kit.width(mount)) < NARROW_BELOW;
+    if (G && G.L.narrow === narrow) fit(); else build(layout(narrow));
   }
 
   function paint(t) {
     if (!G) return;
-    tNow = t;
-    var outA = 1 - ease((t - T_OUT) / 0.7);               // 1 while the teams hold, 0 once they let go
-    var i, n = 0, nr = 0;
+    t = ((t % LOOP) + LOOP) % LOOP; tNow = t;
+    var GY = G.L.gy;
+    var bz = still ? 0 : Math.floor(t / BOIL) % 3;
+    if (bz !== G.boil) { G.boil = bz; G.svg.setAttribute("class", "boil" + bz); }
+    var op = (ease(t / 0.6) * (1 - ease((t - T_END) / 0.9))).toFixed(3);
+    if (op !== G.op) { G.op = op; G.svg.style.opacity = op === "1.000" ? "" : op; }
+    S.drawOn(G.ground, t / 1.5, 300); S.drawOn(G.things, t / 1.2, 80);       // the lines draw themselves at the start
 
-    G.agents.forEach(function (a) {
-      var g = t < T_OUT ? ease((t - T_GATHER - a.delay) / D_GATHER) : 1 - ease((t - T_OUT - a.delay * 0.6) / D_OUT);
-      var wob = (1 - 0.75 * g) * (G.narrow ? 1.6 : 3.2), w = t * 2 * Math.PI / LOOP;
-      var x = a.sx + (a.tx - a.sx) * g + Math.cos(w * a.wx + a.ph) * wob;
-      var y = a.sy + (a.ty - a.sy) * g + Math.sin(w * a.wy + a.ph) * wob;
-      a.x = x; a.y = y; a.g = g;
-      a.dot.setAttribute("cx", x.toFixed(1)); a.dot.setAttribute("cy", y.toFixed(1)); a.dot.setAttribute("fill", mix(g));
-      a.line.setAttribute("x1", x.toFixed(1)); a.line.setAttribute("y1", y.toFixed(1));
-      var best = a.k === BEST ? ease((t - T_BEST) / 0.8) * outA : 0;
-      a.line.setAttribute("opacity", (Math.pow(g, 4) * (0.28 + 0.3 * best)).toFixed(3));
+    // the team's tree: one step per note, with a small pop
+    var st = 1, cnt = 0, pop = 0;
+    TN.forEach(function (te, j) { if (t >= te) { st = j + 2; cnt = j + 1; var q = (t - te) / 0.45; if (q < 1) pop = 1 - ease(q); } });
+    G.young.forEach(function (g, n) { vis(g, n + 1 === st); });
+    vis(G.grown, st >= 5); vis(G.flowers, st === 7);
+    var big = st === 5 ? 0.74 : 1;
+    if (big !== G.big) { G.big = big; place(G.grown, 0, 0, big); }
+    if (pop !== G.pop) { G.pop = pop; place(G.tg, G.TX, GY + 1, 1 + 0.04 * pop); }
+    S.fade(G.tg, ease((t - 0.5) / 0.6));
+
+    // notes: each flies from a robot to the board, then stays there; a few teammates read it
+    G.notes.forEach(function (g, n) { vis(g, n < cnt); });
+    G.flies.forEach(function (f) {
+      var q = (t - f.te + 0.62) / 0.6;
+      if (q <= 0 || q >= 1) { vis(f.g, false); return; }
+      vis(f.g, true); q = ease(q);
+      place(f.g, lerp(f.from.x, G.BX + f.to[0], q), lerp(f.from.y - f.from.h * 1.3, GY + 1 + f.to[1], q) - Math.sin(Math.PI * q) * 16, 1, 28 * (1 - q));
     });
-
-    var bA = ease((t - T_GATHER - 1.3) / 0.8) * outA, level = [];
-    for (i = 0; i < K; i++) level.push(0);
-    EVENTS.forEach(function (ev) { level[ev.k] += ev.gain * ease((t - ev.at - POST_DUR) / GROW); });
-    var hA = ease((t - T_BEST) / 0.8) * outA;
-    G.boards.forEach(function (b, k) {
-      b.g.setAttribute("opacity", bA.toFixed(3));
-      var w = (b.lvW * clamp(level[k])).toFixed(1);
-      b.lv.setAttribute("width", w);
-      if (b.dark) { b.dark.setAttribute("opacity", hA.toFixed(3)); b.lvB.setAttribute("width", w); b.lvB.setAttribute("opacity", hA.toFixed(3)); }
+    G.team.forEach(function (b) {
+      var on = false; b.reads.forEach(function (te) { var q = (t - te - 0.05) / 0.9; if (q > 0 && q < 1) on = true; });
+      vis(b.spark, on);
     });
-    G.wash.setAttribute("opacity", hA.toFixed(3));
-
-    // points in flight and the rings that mark a reader
-    function put(x, y) {
-      if (n >= G.pool.length) return;
-      var c = G.pool[n++];
-      c.setAttribute("cx", x.toFixed(1)); c.setAttribute("cy", y.toFixed(1)); c.setAttribute("opacity", 1);
-    }
-    function ringAt(a, pu) {
-      if (nr >= G.rings.length || pu <= 0 || pu >= 1) return;
-      var c = G.rings[nr++];
-      c.setAttribute("cx", a.x.toFixed(1)); c.setAttribute("cy", a.y.toFixed(1));
-      c.setAttribute("r", (G.dotR + (G.narrow ? 4 : 7) * pu).toFixed(1)); c.setAttribute("opacity", (0.55 * (1 - pu)).toFixed(2));
-    }
-    if (t > T_WORK - 0.5 && t < T_OUT) {
-      EVENTS.forEach(function (ev) {
-        var tm = G.teams[ev.k], p = tm.members[ev.poster];
-        ringAt(p, (t - ev.at + 0.35) / RING_DUR);         // the poster finds something, then posts it
-        var f = (t - ev.at) / POST_DUR;
-        if (f > 0 && f < 1) { f = ease(f); put(p.x + (tm.cx - p.x) * f, p.y + (tm.cy - p.y) * f); }
-        ev.readers.forEach(function (j, q) {
-          var a = tm.members[j], s = ev.at + POST_DUR + READ_LAG + q * 0.07, fr = (t - s) / READ_DUR;
-          if (fr > 0 && fr < 1) { fr = ease(fr); put(tm.cx + (a.x - tm.cx) * fr, tm.cy + (a.y - tm.cy) * fr); }
-          ringAt(a, (t - s - READ_DUR) / RING_DUR);
-        });
-      });
-    }
-    for (; n < G.pool.length; n++) G.pool[n].setAttribute("opacity", 0);
-    for (; nr < G.rings.length; nr++) G.rings[nr].setAttribute("opacity", 0);
-
-    var gAll = (t < T_OUT ? ease((t - T_GATHER - 0.4) / 1.4) : 1 - ease((t - T_OUT - 0.3) / 0.9));
-    G.labels[0].setAttribute("opacity", (1 - gAll).toFixed(3));
-    G.labels[1].setAttribute("opacity", (gAll * (1 - hA)).toFixed(3));
-    G.labels[2].setAttribute("opacity", (gAll * hA).toFixed(3));
+    // the pots: each plant grows a little, at its own time
+    G.lone.forEach(function (b) {
+      var s = Math.min(t >= b.t3 ? 3 : t >= b.t2 ? 2 : 1, b.final);
+      for (var n = 1; n <= b.final; n++) vis(b.st[n], n === s);
+    });
   }
 
   function frame(now) {
@@ -2362,14 +2693,15 @@ DemoKit.register("masthead", function (mount, data, kit, opts) {
   function sync() {                                       // run only on screen, not paused, and with motion allowed
     var want = visible && !paused && !still;
     if (want && !playing) {
-      if (!started) { started = true; tNow = 0; }         // until the first loop, the figure shows the teams
+      if (!started) { started = true; tNow = 0; }         // until the first loop, the figure shows the grown tree
       playing = true; t0 = performance.now() - tNow * 1000; raf = requestAnimationFrame(frame);
     }
     if (!want && playing) { playing = false; cancelAnimationFrame(raf); }
   }
 
-  mount.__seek = function (t) { paused = true; started = true; sync(); paint(((t % LOOP) + LOOP) % LOOP); };
+  mount.__seek = function (t) { paused = true; started = true; sync(); paint(t); };
   mount.__loop = LOOP;
+  mount.__still = T_STILL;
   draw();
   kit.onResize(mount, draw);
   if (!still && "IntersectionObserver" in window) {
