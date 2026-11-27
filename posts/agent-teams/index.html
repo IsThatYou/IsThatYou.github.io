@@ -184,6 +184,42 @@ body {
   .post .meta { grid-template-columns: 1fr; gap: 16px; }
 }
 
+/* Masthead (post 1, header.mast; since 2026-11-26). Centred title and dek, a wide animation under them
+   (figure.masthead, demos/masthead.js), then a wide meta row (authors, affiliations, date, links) between two
+   hairlines. These two blocks are wider than the prose column on purpose. The contents list starts below this
+   block (assets/toc.js places it). */
+
+.post > header.mast { margin-bottom: 44px; text-align: center; }
+.post > header.mast h1 { max-width: 900px; margin-block: 0 16px; font-size: clamp(36px, 6.2vw, 58px); line-height: 1.05; }
+.post > header.mast .dek { max-width: 680px; }
+
+.post > header.mast > figure.masthead { max-width: 1000px; margin-block: 34px 0; padding-top: 0; border-top: 0; }
+
+.post > header.mast > .meta-wide {
+  max-width: 940px;
+  margin-block: 30px 0;
+  grid-template-columns: 1.15fr 1.3fr .8fr .75fr;
+  gap: 0;
+  border-block: 1px solid var(--hair);
+  text-align: left;
+}
+.post .meta-wide > div { padding: 16px 22px 18px; border-left: 1px solid var(--hair); }
+.post .meta-wide > div:first-child { border-left: 0; padding-left: 2px; }
+.post .meta-wide dd { padding-left: 0; }
+.post .meta-wide dd::before { content: none; }
+.post .meta-wide dd > span { display: block; }
+.post .meta-wide .meta-note { margin-top: 8px; }
+
+@media (max-width: 719px) {
+  .post > header.mast > .meta-wide { grid-template-columns: 1fr 1fr; }
+  .post .meta-wide > div { padding: 14px 14px 16px; }
+  .post .meta-wide > div:nth-child(odd) { border-left: 0; padding-left: 2px; }
+  .post .meta-wide > div:nth-child(n + 3) { border-top: 1px solid var(--hair); }
+  .post .meta-wide dd { font-size: 14px; }
+}
+
+.post > header.mast .draft-note { display: inline-block; margin-inline: auto; text-align: left; }
+
 /* ---------------------------------------------------------------- contents */
 
 /* The contents list follows §0, so the headline and the hero stay in the first screen. A hairline, not a box. */
@@ -237,7 +273,8 @@ body {
 
 /* .toc-side (post 1): on wide screens the contents list is fixed in the left margin and marks the section in view
    (assets/toc.js sets aria-current). It needs the margin left of the --breakout figures, so 1440px and up; below that it
-   stays in the flow after the introduction. */
+   stays in the flow after the introduction. toc.js sets its top: level with the first paragraph (below the title
+   block) at the start, then 96px. The top below is the value without the script. */
 @media (min-width: 1440px) {
   .post .toc-side {
     position: fixed;
@@ -971,13 +1008,16 @@ body {
 <body>
 <article class="post">
 
-  <header>
+  <header class="mast">
         <h1>The Amazing Effectiveness of Agent Teams</h1>
     <p class="dek">Agent teams are a new way to scale intelligence. In this blog we are going to show you how ten teams of ten agents beat the best of 100 lone agents by 27% on average over 12 hard tasks.</p>
-    <dl class="meta">
+    <figure class="demo masthead" id="masthead" data-demo="masthead" role="img" aria-label="Animation. One hundred agents that work alone gather into ten teams of ten. In each team, agents post findings to a shared forum and read each other's posts. At the end the best team is marked.">
+      <div class="demo-mount"></div>
+    </figure>
+    <dl class="meta meta-wide">
       <div>
         <dt>Authors</dt>
-        <dd>Junlin Wang<sup>1,2,*</sup>, Haozhe Chen<sup>3,*</sup>, Ang Li<sup>4,2</sup>, Rahul Chalamala<sup>2</sup>, Zhuang Liu<sup>3</sup><span class="meta-note">* Equal contribution</span></dd>
+        <dd><span>Junlin Wang<sup>1,2,*</sup></span><span>Haozhe Chen<sup>3,*</sup></span><span>Ang Li<sup>4,2</sup></span><span>Rahul Chalamala<sup>2</sup></span><span>Zhuang Liu<sup>3</sup></span><span class="meta-note">* Equal contribution</span></dd>
       </div>
       <div>
         <dt>Affiliations</dt>
@@ -2021,7 +2061,11 @@ body {
 /* Contents list (nav.toc-side): mark the section in view with aria-current, so the side list shows where the
    reader is, and fill a reading-progress bar under the list (shown by post.css only where the list is fixed).
    A section counts as current once its top passes 30% of the viewport height. Progress runs from the article's top
-   at the top of the viewport (0) to its bottom at the bottom of the viewport (1). No dependencies. */
+   at the top of the viewport (0) to its bottom at the bottom of the viewport (1). No dependencies.
+
+   Where the list is fixed in the left margin (1440px and up, post.css), it starts level with the first paragraph,
+   below the title block, and stays 96px under the top of the window once the page scrolls past that point
+   (place(), since 2026-11-26). Without this script the list keeps the fixed 96px from post.css. */
 (function () {
   "use strict";
   var nav = document.querySelector("nav.toc-side");
@@ -2043,8 +2087,16 @@ body {
   bar.appendChild(fill);
   nav.appendChild(bar);
 
+  var first = article.querySelector("section"), header = article.querySelector("header");
+  var wide = window.matchMedia ? window.matchMedia("(min-width: 1440px)") : null;
+  function place() {
+    if (!wide || !wide.matches || !first) { nav.style.top = ""; return; }
+    nav.style.top = Math.max(96, Math.round(first.getBoundingClientRect().top) + 2) + "px";
+  }
+
   function update() {
     queued = false;
+    place();
     var line = window.innerHeight * 0.3, id = null;
     for (var i = 0; i < sections.length; i++) {
       if (sections[i].getBoundingClientRect().top <= line) id = sections[i].id;
@@ -2062,8 +2114,268 @@ body {
   function schedule() { if (!queued) { queued = true; window.requestAnimationFrame(update); } }
   window.addEventListener("scroll", schedule, { passive: true });
   window.addEventListener("resize", schedule);
+  if (header && "ResizeObserver" in window) new ResizeObserver(schedule).observe(header);   // the title animation mounts late
   update();
 })();
+</script>
+<script data-from="post1/demos/masthead.js">
+/* masthead.js: the animation under the title of post 1 (mount #masthead, no data).
+ *
+ * One quiet loop of about 16 s that shows the post's idea without words. 100 agents start alone (grey points).
+ * They gather into ten teams of ten, each around its forum board (accent points, thin spokes). Inside a team an
+ * agent posts a finding (a point runs to the board), the board's level rises, and teammates read it (points run
+ * back, a ring marks each reader). At the end the best team gets a dark board and a soft wash, as in the opening
+ * figure. Then the teams let go and the loop starts again.
+ *
+ * Nothing here is measured: positions, levels and the choice of the best team are made up for the drawing.
+ * Every frame is a pure function of time (paint(t)), so mount.__seek(t) can show any moment (used for previews
+ * and for the social video). The loop runs only while the figure is on screen, the small pause button stops it,
+ * and with reduced motion the figure shows the teams and does not move.
+ */
+DemoKit.register("masthead", function (mount, data, kit, opts) {
+  "use strict";
+  var id = opts.id || "masthead", ID = "#" + id;
+
+  kit.style("masthead-" + id, [
+    ID + " .demo-mount { position: relative; }",
+    ID + " svg { display: block; overflow: visible; }",
+    ID + " svg .mh-spoke { stroke: var(--team); stroke-width: 1; }",
+    ID + " svg .mh-board { fill: var(--panel); stroke: var(--hair-strong); stroke-width: 1; }",
+    ID + " svg .mh-board-best { fill: var(--ink); }",
+    ID + " svg .mh-track { fill: var(--hair-strong); }",
+    ID + " svg .mh-level { fill: var(--team); }",
+    ID + " svg .mh-level-best { fill: var(--paper); }",
+    ID + " svg .mh-wash { fill: var(--team); fill-opacity: .09; stroke: var(--team); stroke-opacity: .3; stroke-width: 1; }",
+    ID + " svg .mh-msg { fill: var(--team); stroke: var(--paper); stroke-width: 1; }",
+    ID + " svg .mh-ring { fill: none; stroke: var(--team); stroke-width: 1; }",
+    ID + " svg .mh-label { font: 500 10.5px var(--font-mono); letter-spacing: .09em; fill: var(--muted); }",
+    ID + " .mh-pause { position: absolute; right: 0; bottom: 0; margin: 0; padding: 2px 0; border: 0; background: none;" +
+      " cursor: pointer; font: 11px var(--font-mono); color: var(--muted); }",
+    ID + " .mh-pause:hover, " + ID + " .mh-pause:focus-visible { color: var(--ink); text-decoration: underline; }"
+  ].join("\n"));
+
+  var N = 100, K = 10, BEST = 3;
+  // seconds
+  var T_GATHER = 2.4, D_GATHER = 2.0, T_WORK = 4.7, T_BEST = 11.6, T_OUT = 14.8, D_OUT = 1.4;
+  var LOOP = 16.6, T_STILL = 13.4;
+  var POST_DUR = 0.5, READ_LAG = 0.25, READ_DUR = 0.55, RING_DUR = 0.55, GROW = 0.4;
+
+  function clamp(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
+  function ease(x) { x = clamp(x); return x * x * (3 - 2 * x); }
+  function hex(c) {
+    var m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(String(c).trim());
+    return m ? [parseInt(m[1], 16), parseInt(m[2], 16), parseInt(m[3], 16)] : [120, 120, 120];
+  }
+  var C_LONE = hex(kit.color("lone")), C_TEAM = hex(kit.color("team"));
+  function mix(g) {
+    return "rgb(" + Math.round(C_LONE[0] + (C_TEAM[0] - C_LONE[0]) * g) + "," + Math.round(C_LONE[1] + (C_TEAM[1] - C_LONE[1]) * g) +
+      "," + Math.round(C_LONE[2] + (C_TEAM[2] - C_LONE[2]) * g) + ")";
+  }
+
+  // ---- the made-up story: who posts when, who reads it, and how far each board's level gets.
+  var story = kit.rng(7);
+  var END = [], EVENTS = [];                              // END[k]: final level of team k (0..1)
+  (function () {
+    for (var k = 0; k < K; k++) {
+      END.push(k === BEST ? 0.96 : 0.42 + 0.36 * story());
+      var n = k === BEST ? 5 : 3 + story.int(2), span = T_BEST - 1.5 - T_WORK;
+      for (var e = 0; e < n; e++) {
+        var poster = story.int(10), others = [];
+        for (var j = 0; j < 10; j++) if (j !== poster) others.push(j);
+        EVENTS.push({ k: k, at: T_WORK + 0.15 + span * (e + 0.15 + 0.7 * story()) / n, poster: poster,
+          readers: story.sample(others, 3 + story.int(3)), gain: END[k] / n });
+      }
+    }
+  })();
+
+  var G = null;            // geometry and live nodes of the current drawing
+  var playing = false, paused = false, started = false, raf = 0, t0 = 0, tNow = T_STILL, visible = false;
+  var still = kit.reducedMotion();
+
+  function blob(pts) {                                    // a smooth closed path through pts (Catmull-Rom as Beziers)
+    var n = pts.length, d = "M" + pts[0][0].toFixed(1) + "," + pts[0][1].toFixed(1);
+    for (var i = 0; i < n; i++) {
+      var p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
+      d += "C" + (p1[0] + (p2[0] - p0[0]) / 6).toFixed(1) + "," + (p1[1] + (p2[1] - p0[1]) / 6).toFixed(1) + " " +
+        (p2[0] - (p3[0] - p1[0]) / 6).toFixed(1) + "," + (p2[1] - (p3[1] - p1[1]) / 6).toFixed(1) + " " +
+        p2[0].toFixed(1) + "," + p2[1].toFixed(1);
+    }
+    return d + "Z";
+  }
+
+  function draw() {
+    mount.replaceChildren();
+    var W = Math.max(280, kit.width(mount)), narrow = W < 640;
+    var foot = 24, top = narrow ? 6 : 10;
+    var fieldH = narrow ? Math.round(W * 0.54) : Math.round(Math.min(336, Math.max(280, W * 0.34)));
+    var H = top + fieldH + foot;
+    var cols = 5, cw = W / cols, ch = fieldH / 2;
+    var R = Math.min(cw, ch) * (narrow ? 0.41 : 0.38);
+    var dotR = narrow ? 1.7 : 3, bw = narrow ? 16 : 30, bh = narrow ? 9 : 14;
+    var rnd = kit.rng(23);
+
+    // 100 scattered places (a loose 20 x 5 grid), split into ten groups of ten that sit near each other
+    var gx = W / 20, gy = fieldH / 5, pts = [];
+    for (var r = 0; r < 5; r++) for (var c = 0; c < 20; c++) {
+      pts.push({ col: c, sx: (c + 0.5) * gx + (rnd() - 0.5) * gx * 0.72, sy: top + (r + 0.5) * gy + (rnd() - 0.5) * gy * 0.72 });
+    }
+    var teams = [];
+    for (var b = 0; b < cols; b++) {
+      var block = pts.filter(function (p) { return Math.floor(p.col / 4) === b; }).sort(function (p, q) { return p.sy - q.sy; });
+      [0, 1].forEach(function (row) {
+        var k = row * cols + b;
+        var cx = (b + 0.5) * cw + (rnd() - 0.5) * cw * 0.10, cy = top + (row + 0.5) * ch + (rnd() - 0.5) * ch * 0.08;
+        var a0 = rnd() * Math.PI * 2, slots = [];
+        for (var j = 0; j < 10; j++) {
+          var ang = a0 + j * Math.PI / 5 + (rnd() - 0.5) * 0.3, len = R * (0.68 + 0.32 * rnd());
+          slots.push({ ang: ang, x: cx + Math.cos(ang) * len, y: cy + Math.sin(ang) * len });
+        }
+        var mem = block.slice(row * 10, row * 10 + 10).sort(function (p, q) {
+          return Math.atan2(p.sy - cy, p.sx - cx) - Math.atan2(q.sy - cy, q.sx - cx);
+        });
+        slots.sort(function (p, q) { return Math.atan2(p.y - cy, p.x - cx) - Math.atan2(q.y - cy, q.x - cx); });
+        var bestRot = 0, bestCost = Infinity;             // turn the ring of seats so every agent has a short way to go
+        for (var rot = 0; rot < 10; rot++) {
+          var cost = 0;
+          for (var m = 0; m < 10; m++) { var s = slots[(m + rot) % 10]; cost += Math.pow(mem[m].sx - s.x, 2) + Math.pow(mem[m].sy - s.y, 2); }
+          if (cost < bestCost) { bestCost = cost; bestRot = rot; }
+        }
+        teams[k] = { cx: cx, cy: cy, members: mem.map(function (p, m) {
+          var s = slots[(m + bestRot) % 10];
+          // wx, wy: whole turns per loop of the small drift, so the last frame meets the first
+          return { k: k, sx: p.sx, sy: p.sy, tx: s.x, ty: s.y, delay: 0.5 * rnd(), ph: rnd() * Math.PI * 2, wx: 3 + rnd.int(4), wy: 3 + rnd.int(4) };
+        }) };
+      });
+    }
+
+    var gWash = kit.svg("g"), gSpoke = kit.svg("g"), gDot = kit.svg("g"), gBoard = kit.svg("g"), gLive = kit.svg("g"), gText = kit.svg("g");
+    var agents = [], boards = [];
+    teams.forEach(function (tm, k) {
+      tm.members.forEach(function (a) {
+        a.line = gSpoke.appendChild(kit.svg("line", { class: "mh-spoke", x2: tm.cx.toFixed(1), y2: tm.cy.toFixed(1), opacity: 0 }));
+        a.dot = gDot.appendChild(kit.svg("circle", { r: dotR }));
+        agents.push(a);
+      });
+      var g = gBoard.appendChild(kit.svg("g", { transform: "translate(" + tm.cx.toFixed(1) + "," + tm.cy.toFixed(1) + ")", opacity: 0 }));
+      g.appendChild(kit.svg("rect", { class: "mh-board", x: -bw / 2, y: -bh / 2, width: bw, height: bh, rx: 2 }));
+      var dark = k === BEST ? g.appendChild(kit.svg("rect", { class: "mh-board-best", x: -bw / 2, y: -bh / 2, width: bw, height: bh, rx: 2, opacity: 0 })) : null;
+      var lvH = narrow ? 2 : 3, lvW = bw - (narrow ? 5 : 10);
+      g.appendChild(kit.svg("rect", { class: "mh-track", x: -lvW / 2, y: -lvH / 2, width: lvW, height: lvH }));
+      var lv = g.appendChild(kit.svg("rect", { class: "mh-level", x: -lvW / 2, y: -lvH / 2, width: 0, height: lvH }));
+      var lvB = k === BEST ? g.appendChild(kit.svg("rect", { class: "mh-level-best", x: -lvW / 2, y: -lvH / 2, width: 0, height: lvH, opacity: 0 })) : null;
+      boards.push({ g: g, dark: dark, lv: lv, lvB: lvB, lvW: lvW });
+    });
+    var bt = teams[BEST], out = narrow ? 5 : 11;
+    var ring = bt.members.map(function (a) {
+      var dx = a.tx - bt.cx, dy = a.ty - bt.cy, d = Math.hypot(dx, dy) || 1;
+      return [a.tx + dx / d * out, a.ty + dy / d * out];
+    }).sort(function (p, q) { return Math.atan2(p[1] - bt.cy, p[0] - bt.cx) - Math.atan2(q[1] - bt.cy, q[0] - bt.cx); });
+    var wash = gWash.appendChild(kit.svg("path", { class: "mh-wash", d: blob(ring), opacity: 0 }));
+
+    var pool = [], rings = [];
+    for (var i = 0; i < 90; i++) pool.push(gLive.appendChild(kit.svg("circle", { class: "mh-msg", r: narrow ? 1.6 : 2.6, opacity: 0 })));
+    for (i = 0; i < 70; i++) rings.push(gLive.appendChild(kit.svg("circle", { class: "mh-ring", opacity: 0 })));
+    var labels = ["100 AGENTS, EACH ALONE", narrow ? "THE SAME 100, IN TEN TEAMS" : "THE SAME 100, AS TEN TEAMS OF TEN", "KEEP THE BEST TEAM"].map(function (s) {
+      return gText.appendChild(kit.svg("text", { class: "mh-label", x: 0, y: H - 6, text: s, opacity: 0 }));
+    });
+
+    mount.appendChild(kit.svg("svg", { width: W, height: H, viewBox: "0 0 " + W + " " + H, "aria-hidden": "true" },
+      [gWash, gSpoke, gBoard, gDot, gLive, gText]));
+    if (!still) {
+      var btn = kit.el("button", { type: "button", class: "mh-pause", text: paused ? "play" : "pause" });
+      btn.addEventListener("click", function () { paused = !paused; btn.textContent = paused ? "play" : "pause"; sync(); });
+      mount.appendChild(btn);
+    }
+    G = { teams: teams, agents: agents, boards: boards, wash: wash, pool: pool, rings: rings, labels: labels, dotR: dotR, narrow: narrow };
+    paint(tNow);
+  }
+
+  function paint(t) {
+    if (!G) return;
+    tNow = t;
+    var outA = 1 - ease((t - T_OUT) / 0.7);               // 1 while the teams hold, 0 once they let go
+    var i, n = 0, nr = 0;
+
+    G.agents.forEach(function (a) {
+      var g = t < T_OUT ? ease((t - T_GATHER - a.delay) / D_GATHER) : 1 - ease((t - T_OUT - a.delay * 0.6) / D_OUT);
+      var wob = (1 - 0.75 * g) * (G.narrow ? 1.6 : 3.2), w = t * 2 * Math.PI / LOOP;
+      var x = a.sx + (a.tx - a.sx) * g + Math.cos(w * a.wx + a.ph) * wob;
+      var y = a.sy + (a.ty - a.sy) * g + Math.sin(w * a.wy + a.ph) * wob;
+      a.x = x; a.y = y; a.g = g;
+      a.dot.setAttribute("cx", x.toFixed(1)); a.dot.setAttribute("cy", y.toFixed(1)); a.dot.setAttribute("fill", mix(g));
+      a.line.setAttribute("x1", x.toFixed(1)); a.line.setAttribute("y1", y.toFixed(1));
+      var best = a.k === BEST ? ease((t - T_BEST) / 0.8) * outA : 0;
+      a.line.setAttribute("opacity", (Math.pow(g, 4) * (0.28 + 0.3 * best)).toFixed(3));
+    });
+
+    var bA = ease((t - T_GATHER - 1.3) / 0.8) * outA, level = [];
+    for (i = 0; i < K; i++) level.push(0);
+    EVENTS.forEach(function (ev) { level[ev.k] += ev.gain * ease((t - ev.at - POST_DUR) / GROW); });
+    var hA = ease((t - T_BEST) / 0.8) * outA;
+    G.boards.forEach(function (b, k) {
+      b.g.setAttribute("opacity", bA.toFixed(3));
+      var w = (b.lvW * clamp(level[k])).toFixed(1);
+      b.lv.setAttribute("width", w);
+      if (b.dark) { b.dark.setAttribute("opacity", hA.toFixed(3)); b.lvB.setAttribute("width", w); b.lvB.setAttribute("opacity", hA.toFixed(3)); }
+    });
+    G.wash.setAttribute("opacity", hA.toFixed(3));
+
+    // points in flight and the rings that mark a reader
+    function put(x, y) {
+      if (n >= G.pool.length) return;
+      var c = G.pool[n++];
+      c.setAttribute("cx", x.toFixed(1)); c.setAttribute("cy", y.toFixed(1)); c.setAttribute("opacity", 1);
+    }
+    function ringAt(a, pu) {
+      if (nr >= G.rings.length || pu <= 0 || pu >= 1) return;
+      var c = G.rings[nr++];
+      c.setAttribute("cx", a.x.toFixed(1)); c.setAttribute("cy", a.y.toFixed(1));
+      c.setAttribute("r", (G.dotR + (G.narrow ? 4 : 7) * pu).toFixed(1)); c.setAttribute("opacity", (0.55 * (1 - pu)).toFixed(2));
+    }
+    if (t > T_WORK - 0.5 && t < T_OUT) {
+      EVENTS.forEach(function (ev) {
+        var tm = G.teams[ev.k], p = tm.members[ev.poster];
+        ringAt(p, (t - ev.at + 0.35) / RING_DUR);         // the poster finds something, then posts it
+        var f = (t - ev.at) / POST_DUR;
+        if (f > 0 && f < 1) { f = ease(f); put(p.x + (tm.cx - p.x) * f, p.y + (tm.cy - p.y) * f); }
+        ev.readers.forEach(function (j, q) {
+          var a = tm.members[j], s = ev.at + POST_DUR + READ_LAG + q * 0.07, fr = (t - s) / READ_DUR;
+          if (fr > 0 && fr < 1) { fr = ease(fr); put(tm.cx + (a.x - tm.cx) * fr, tm.cy + (a.y - tm.cy) * fr); }
+          ringAt(a, (t - s - READ_DUR) / RING_DUR);
+        });
+      });
+    }
+    for (; n < G.pool.length; n++) G.pool[n].setAttribute("opacity", 0);
+    for (; nr < G.rings.length; nr++) G.rings[nr].setAttribute("opacity", 0);
+
+    var gAll = (t < T_OUT ? ease((t - T_GATHER - 0.4) / 1.4) : 1 - ease((t - T_OUT - 0.3) / 0.9));
+    G.labels[0].setAttribute("opacity", (1 - gAll).toFixed(3));
+    G.labels[1].setAttribute("opacity", (gAll * (1 - hA)).toFixed(3));
+    G.labels[2].setAttribute("opacity", (gAll * hA).toFixed(3));
+  }
+
+  function frame(now) {
+    if (!playing) return;
+    paint(((now - t0) / 1000) % LOOP);
+    raf = requestAnimationFrame(frame);
+  }
+  function sync() {                                       // run only on screen, not paused, and with motion allowed
+    var want = visible && !paused && !still;
+    if (want && !playing) {
+      if (!started) { started = true; tNow = 0; }         // until the first loop, the figure shows the teams
+      playing = true; t0 = performance.now() - tNow * 1000; raf = requestAnimationFrame(frame);
+    }
+    if (!want && playing) { playing = false; cancelAnimationFrame(raf); }
+  }
+
+  mount.__seek = function (t) { paused = true; started = true; sync(); paint(((t % LOOP) + LOOP) % LOOP); };
+  mount.__loop = LOOP;
+  draw();
+  kit.onResize(mount, draw);
+  if (!still && "IntersectionObserver" in window) {
+    new IntersectionObserver(function (es) { visible = es[es.length - 1].isIntersecting; sync(); }, { threshold: 0.2 }).observe(mount);
+  }
+});
 </script>
 <script data-from="post1/demos/hero.js">
 /*
@@ -2881,7 +3193,7 @@ DemoKit.register("system", function (mount, data, kit, opts) {
       line("sy-rule", railR, yPost, fX, yPost); head(fX - 4, yPost, 1, 0);
       line("sy-rule", railR, yRead, fX, yRead); head(railR + 1, yRead, -1, 0);
       postLabel = text("sy-on", railR + 10, yPost - 9.5, "post");
-      readLabel = text("sy-on", railR + 10, yRead - 9.5, "list, read");
+      readLabel = text("sy-on", railR + 10, yRead + 16.5, "list, read");   // under its rule: above it, it covered the fourth row's score
       postPath = function (k) { return [[laneX + laneW + 4, laneY(k)], [railR, laneY(k)], [railR, yPost], [fX + 6, yPost]]; };
       readPath = function (k) { return [[fX + 6, yRead], [railR, yRead], [railR, laneY(k)], [laneX + laneW + 4, laneY(k)]]; };
     } else {
@@ -2904,12 +3216,12 @@ DemoKit.register("system", function (mount, data, kit, opts) {
       gLive.appendChild(gr);
       return { g: gr, tag: tag };
     });
-    text("sy-small", fX + fW, fRuleY + 4 * fRow + 18, "author's best score, post title", "end");
+    text("sy-small", fX + fW, fRuleY + 4 * fRow + (narrow ? 18 : 34), "author's best score, post title", "end");
 
     var pool = [];
     for (i = 0; i < 16; i++) pool.push(gPk.appendChild(kit.svg("circle", { r: 2, opacity: 0 })));
 
-    H = Math.ceil(Math.max(yEnd + 30, fRuleY + 4 * fRow + 26));
+    H = Math.ceil(Math.max(yEnd + 30, fRuleY + 4 * fRow + (narrow ? 26 : 42)));
     var s = kit.svg("svg", {
       width: W, height: H, viewBox: "0 0 " + W + " " + H, role: "img",
       "aria-label": "How one team of ten runs. A controller starts ten agents and stops them at 12 hours. Each agent " +
